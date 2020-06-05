@@ -24,7 +24,7 @@ data class AtmMachine(
     @field:Json(name = "loc_lon") val longitude: String,
     @field:Json(name = "loc_lat") val latitude: String,
     @field:Json(name = "atm_desc") val desc: String?,
-    @field:Json(name = "atm_fees") val fees: String,
+    @field:Json(name = "atm_fees") val fees: String?,
     @field:Json(name = "atm_min") val min: String,
     @field:Json(name = "atm_max") val max: String,
     @field:Json(name = "atm_bills") val bills: String,
