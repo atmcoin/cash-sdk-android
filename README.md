@@ -1,7 +1,12 @@
 # cash-sdk-android
 SDK to convert Crypto to Cash direct at thousands of ATMs
 
+[![CircleCI](https://circleci.com/gh/atmcoin/cash-sdk-android.svg?style=svg)](https://circleci.com/gh/atmcoin/cash-sdk-android)
 [![](https://jitpack.io/v/atmcoin/cash-sdk-android.svg)](https://jitpack.io/#atmcoin/cash-sdk-android)
+
+Are you looking for the ios version of the CashSDK? 
+
+https://github.com/atmcoin/cash-sdk-ios/
 
 To setup the gradle dependency add to the master pom file the jitpack maven server.
 
