@@ -28,7 +28,8 @@ data class AtmMachine(
     @field:Json(name = "atm_min") val min: String,
     @field:Json(name = "atm_max") val max: String,
     @field:Json(name = "atm_bills") val bills: String,
-    @field:Json(name = "atm_currency") val currency: String):Serializable
+    @field:Json(name = "atm_currency") val currency: String,
+    @field:Json(name = "atm_red") val redemption: Int):Serializable
 
 @Suppress("ReturnCount")
 fun AtmMachine.isValidAmount(amount:String?) : Boolean {
