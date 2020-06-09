@@ -16,7 +16,7 @@ class AtmListResponseUnitTest {
     fun addition_isCorrect() {
       val atm = AtmMachine("","","",
           "","","","","", "",
-          "20","100", "","")
+          "20","100", "","", 1)
 
         assert(atm.isValidAmount("25"))
         assert(atm.isValidAmount("20"))
