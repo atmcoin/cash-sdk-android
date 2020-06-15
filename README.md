@@ -20,7 +20,7 @@ allprojects {
 ```
 
 Then in the module that you want to use that dependency add the following implementation, change Tag to one of the releases for example
-`com.github.atmcoin:cash-sdk-android:1.0`
+`com.github.atmcoin:cash-sdk-android:1.3`
 
 ```
 dependencies {
