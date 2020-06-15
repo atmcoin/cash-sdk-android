@@ -27,3 +27,11 @@ dependencies {
   implementation 'com.github.atmcoin:cash-sdk-android:Tag'
 }
 ```
+
+In the module `app` you can find a demo app that shows how to use the CashSDK.
+
+
+<p align="center">
+  <img src="demoapp.gif" alt="demoApp" width="300px"/>
+<p/>
+
