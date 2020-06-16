@@ -15,7 +15,8 @@ jobs:
           name: gradle build
           command: |
             ./gradlew --console=plain build
-
+            
+      - run:
       #gradle jacoco
           name: gradle jacoco
           command: |
