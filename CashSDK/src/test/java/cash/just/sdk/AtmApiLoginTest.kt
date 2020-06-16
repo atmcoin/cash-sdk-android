@@ -40,8 +40,8 @@ class AtmApiLoginTest() : AbstractAtmApiTest() {
         var error: String = "";
 
         CashSDK.createSession(server, object : Cash.SessionCallback {
-            override fun onSessionCreated(returnKey: String) {
-                sessionKeyCreated = returnKey;
+            override fun onSessionCreated(sessionKey: String) {
+                sessionKeyCreated = sessionKey;
             }
 
             override fun onError(errorMessage: String?) {
@@ -76,8 +76,8 @@ class AtmApiLoginTest() : AbstractAtmApiTest() {
         var error: String = "";
 
         CashSDK.createSession(server, object : Cash.SessionCallback {
-            override fun onSessionCreated(returnKey: String) {
-                sessionKeyCreated = returnKey;
+            override fun onSessionCreated(sessionKey: String) {
+                sessionKeyCreated = sessionKey;
             }
 
             override fun onError(errorMessage: String?) {
