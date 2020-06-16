@@ -22,6 +22,17 @@ jobs:
           command: |
             ./gradlew --console=plain jacocoTestReport
 
+
+    # SONAR
+      - run:
+          name:  sonar check  
+          command: |
+                  echo SonarStart
+            if [ -z "$sonar_login" ]; then
+                  ./gradlew  --console=plain --stacktrace  sonarqube  -Dsonar.organization=$sonar_organization  -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectName=cash-sdk-android -Dsonar.projectKey=atmcoin_cash-sdk-android -Dsonar.login=$sonar_login   -Dsonar.coverage.jacoco.xmlReportPaths=/home/circleci/repo/CashSDK/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml -Dsonar.junit.reportPaths=build/test-results/testDebugUnitTest
+            else
+             echo Sonar Skiped
+            fi 
      # save tests!
       - run:
           name: Save test results
