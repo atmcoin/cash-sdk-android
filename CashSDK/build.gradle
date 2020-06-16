@@ -41,4 +41,7 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.2"
 
     implementation 'com.google.code.gson:gson:2.8.6'
+
+
+    testImplementation("com.github.tomakehurst:wiremock-jre8:2.26.3")
 }

@@ -10,7 +10,8 @@ interface Cash {
 
     enum class BtcNetwork {
         MAIN_NET,
-        TEST_NET
+        TEST_NET,
+        TEST_LOCAL
     }
 
     interface SessionCallback {
