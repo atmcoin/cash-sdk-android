@@ -11,6 +11,7 @@ import org.junit.runners.MethodSorters
 import retrofit2.Call
 import retrofit2.Response
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import java.util.concurrent.CountDownLatch
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -42,18 +43,20 @@ class AtmApiAtmListTest() : AbstractAtmApiTest() {
 
         var error: String? = "";
         lateinit  var atms: Response<AtmListResponse>
+        val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.getAtmList().enqueue(object : retrofit2.Callback<AtmListResponse> {
             override fun onFailure(call: Call<AtmListResponse>, t: Throwable) {
                 error = t.message
+                countDownResponse.countDown();
             }
 
             override fun onResponse(call: Call<AtmListResponse>, response: Response<AtmListResponse>) {
                 atms = response;
-
+                countDownResponse.countDown();
             }
         })
 
-        Thread.sleep(500)
+        countDownResponse.await()
 
         System.out.println("Error : " + error)
         Assert.assertNotNull("Session  created ", atms);
@@ -82,18 +85,20 @@ class AtmApiAtmListTest() : AbstractAtmApiTest() {
 
         var error: String? = "";
         lateinit  var atms: Response<AtmListResponse>
+        val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.getAtmList().enqueue(object : retrofit2.Callback<AtmListResponse> {
             override fun onFailure(call: Call<AtmListResponse>, t: Throwable) {
                 error = t.message
+                countDownResponse.countDown();
             }
 
             override fun onResponse(call: Call<AtmListResponse>, response: Response<AtmListResponse>) {
                 atms = response;
-
+                countDownResponse.countDown();
             }
         })
 
-        Thread.sleep(500)
+        countDownResponse.await()
 
         System.out.println("Error : " + error)
         Assert.assertNotNull("Session  created ", atms);
@@ -120,18 +125,21 @@ class AtmApiAtmListTest() : AbstractAtmApiTest() {
 
         var error: String? = "";
         lateinit  var atms: Response<AtmListResponse>
+        val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.getAtmListByLocation("2","1").enqueue(object : retrofit2.Callback<AtmListResponse> {
             override fun onFailure(call: Call<AtmListResponse>, t: Throwable) {
                 error = t.message
+                countDownResponse.countDown();
             }
 
             override fun onResponse(call: Call<AtmListResponse>, response: Response<AtmListResponse>) {
                 atms = response;
+                countDownResponse.countDown();
 
             }
         })
 
-        Thread.sleep(500)
+        countDownResponse.await()
 
         System.out.println("Error : " + error)
         Assert.assertNotNull("Session  created ", atms);

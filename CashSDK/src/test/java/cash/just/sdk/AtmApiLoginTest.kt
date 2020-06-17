@@ -6,6 +6,8 @@ import org.junit.Assert
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -23,9 +25,10 @@ class AtmApiLoginTest() : AbstractAtmApiTest() {
         InitSession()
     }
 
-    @Test
+    //@Test
     fun RestAtmSessionCreationError502() {
         System.out.println("Start : RestAtmSessionCreationError502" )
+
         WireMock.stubFor(
             WireMock.post(WireMock.urlEqualTo("/atm/wac/guest/login"))
                 .willReturn(
@@ -38,30 +41,33 @@ class AtmApiLoginTest() : AbstractAtmApiTest() {
         val server = Cash.BtcNetwork.TEST_LOCAL
         var sessionKeyCreated: String = "";
         var error: String = "";
-
+        val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.createSession(server, object : Cash.SessionCallback {
             override fun onSessionCreated(sessionKey: String) {
                 sessionKeyCreated = sessionKey;
+                countDownResponse.countDown();
             }
 
             override fun onError(errorMessage: String?) {
                 error = "error :" + errorMessage
+                countDownResponse.countDown();
             }
         })
-        Thread.sleep(500)
+        countDownResponse.await(500,TimeUnit.MILLISECONDS)
         System.out.println("sessionKey : " + sessionKeyCreated)
         System.out.println("Error : " + error)
-        //Assert.assertTrue("Error Message Empty " + error, StringUtils.isNotBlank(error));
-        //Assert.assertFalse("Session  created ", CashSDK.isSessionCreated());
+        Assert.assertTrue("Error Message Empty " + error, StringUtils.isNotBlank(error));
+        Assert.assertFalse("Session  created ", CashSDK.isSessionCreated());
         Assert.assertTrue("Session key empty", StringUtils.isBlank(sessionKeyCreated));
 
 
 
     }
 
-    @Test
+    //@Test
     fun RestAtmS0essionCreationErrorFormat() {
         System.out.println("Start : RestAtmS0essionCreationErrorFormat" )
+
         WireMock.stubFor(
             WireMock.post(WireMock.urlEqualTo("/atm/wac/guest/login"))
                 .willReturn(
@@ -74,21 +80,23 @@ class AtmApiLoginTest() : AbstractAtmApiTest() {
         val server = Cash.BtcNetwork.TEST_LOCAL
         var sessionKeyCreated: String = "";
         var error: String = "";
-
+        val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.createSession(server, object : Cash.SessionCallback {
             override fun onSessionCreated(sessionKey: String) {
                 sessionKeyCreated = sessionKey;
+                countDownResponse.countDown();
             }
 
             override fun onError(errorMessage: String?) {
                 error = "error :" + errorMessage
+                countDownResponse.countDown();
             }
         })
-        Thread.sleep(500)
+        countDownResponse.await()
         System.out.println("sessionKey : " + sessionKeyCreated)
         System.out.println("Error : " + error)
         Assert.assertTrue("Session key Error " + error, StringUtils.isNotBlank(error));
-        //Assert.assertFalse("Session  created ", CashSDK.isSessionCreated());
+        Assert.assertFalse("Session  created ", CashSDK.isSessionCreated());
         Assert.assertTrue("Session key empty", StringUtils.isBlank(sessionKeyCreated));
     }
 
