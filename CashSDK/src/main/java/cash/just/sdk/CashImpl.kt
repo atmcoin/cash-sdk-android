@@ -26,6 +26,9 @@ class CashImpl:Cash {
             BtcNetwork.TEST_NET -> {
                 "https://secure.just.cash/"
             }
+            BtcNetwork.TEST_LOCAL-> {
+                "http://127.0.0.1:8080/"
+            }
         }
 
         retrofit = Retrofit.Builder().baseUrl(serverUrl)

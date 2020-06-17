@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
- android: circleci/android@0.2.0
+ android: circleci/android@0.2.1
 
 
 jobs:
@@ -10,5 +10,48 @@ jobs:
         
     steps:
       - checkout
+      
+      #Refresh gradle
       - run:
-          command: ./gradlew build
+          name: Refresh gradle
+          command: |
+            ./gradlew   dependencies
+
+      #gradle build
+      - run:
+          name: gradle build
+          command: |
+            ./gradlew --console=plain build
+            
+      - run:
+      #gradle jacoco
+          name: gradle jacoco
+          command: |
+            ./gradlew --console=plain jacocoTestReport
+
+
+    # SONAR
+      - run:
+          name:  sonar check  
+          command: |
+            echo SonarStart
+            if [ ! -z "$sonar_login" ]; then
+                  ./gradlew  --console=plain --stacktrace  sonarqube  -Dsonar.organization=$sonar_organization  -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectName=cash-sdk-android -Dsonar.projectKey=atmcoin_cash-sdk-android -Dsonar.login=$sonar_login   -Dsonar.branch.name=$CIRCLE_BRANCH  -Dsonar.coverage.jacoco.xmlReportPaths=/home/circleci/project/CashSDK/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml -Dsonar.junit.reportPaths=build/test-results/testDebugUnitTest
+            else
+             echo Sonar Skiped
+            fi 
+     # save tests!
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/atrifact
+            ls -l ./CashSDK/build
+            cp -r ./CashSDK/build/reports ~/atrifact;
+            cp -r ./CashSDK/build/test-results ~/atrifact;
+
+
+          when: always
+      - store_test_results:
+          path: ./CashSDK/build/test-results/testDebugUnitTest
+      - store_artifacts:
+          path: ~/atrifact

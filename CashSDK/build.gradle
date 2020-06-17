@@ -3,6 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+apply from: rootProject.file("jacoco.gradle")
+
+sonarqube {
+
+
+}
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -21,6 +27,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable = true
+            jniDebuggable = true
+            minifyEnabled = false
+            testCoverageEnabled true
         }
     }
 }
@@ -41,4 +53,7 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.2"
 
     implementation 'com.google.code.gson:gson:2.8.6'
+
+
+    testImplementation("com.github.tomakehurst:wiremock-jre8:2.26.3")
 }
