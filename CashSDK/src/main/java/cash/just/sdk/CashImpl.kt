@@ -38,8 +38,12 @@ class CashImpl:Cash {
             }
 
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                sessionKey = response.body()!!.data.sessionKey
-                listener.onSessionCreated(sessionKey)
+                if(response.isSuccessful) {
+                    sessionKey = response.body()!!.data.sessionKey
+                    listener.onSessionCreated(sessionKey)
+                } else {
+                    listener.onError("${response.code()}")
+                }
             }
         })
     }
