@@ -56,7 +56,7 @@ class CashImpl:Cash {
     }
 
     override fun getAtmListByLocation(latitude: String, longitude: String): Call<AtmListResponse> {
-        return retrofit.getAtmListByLocation(latitude, longitude, sessionKey)
+        return retrofit.getAtmListByLocation(sessionKey, latitude, longitude)
     }
 
     override fun checkCashCodeStatus(code: String): Call<CashCodeStatusResponse> {
