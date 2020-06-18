@@ -41,7 +41,7 @@ class CashImpl:Cash {
             }
 
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
                     sessionKey = response.body()!!.data.sessionKey
                     listener.onSessionCreated(sessionKey)
                 } else {
