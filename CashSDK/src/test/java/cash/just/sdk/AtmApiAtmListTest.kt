@@ -107,13 +107,13 @@ class AtmApiAtmListTest() : AbstractAtmApiTest() {
     }
 
 
-    //@Test
+    @Test
     fun RestAtmListNearSuccess() {
         System.out.println("Start : RestAtmListNearSuccess" )
         InitSession()
 
         stubFor(
-            get(urlEqualTo("/atm/wac/atm/near/latlon/1/2"))
+            get(urlEqualTo("/atm/wac/atm/near/latlon/2/1"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .willReturn(
                     aResponse()
