@@ -10,7 +10,12 @@ jobs:
         
     steps:
       - checkout
-      
+
+      # Download and cache dependencies gradle
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "CashSDK/build.gradle" }}
+            
       #Refresh gradle
       - run:
           name: Refresh gradle
@@ -40,6 +45,15 @@ jobs:
             else
              echo Sonar Skiped
             fi 
+            
+            
+      # save cache
+      - save_cache:
+          paths:
+            - ~/.gradle
+
+          key: v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "CashSDK/build.gradle" }}
+          
      # save tests!
       - run:
           name: Save test results

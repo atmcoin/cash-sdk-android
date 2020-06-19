@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
-
+import java.util.concurrent.CountDownLatch
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -27,6 +27,7 @@ abstract class AbstractAtmApiTest {
 
 
     fun InitSession() {
+
         stubFor(
             post(urlEqualTo("/atm/wac/guest/login"))
                 .willReturn(
@@ -39,17 +40,19 @@ abstract class AbstractAtmApiTest {
         val server = Cash.BtcNetwork.TEST_LOCAL
         var sessionKeyCreated: String = "";
         var error: String = "";
-
+        val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.createSession(server, object : Cash.SessionCallback {
             override fun onSessionCreated(sessionKey: String) {
                 sessionKeyCreated = sessionKey;
+                countDownResponse.countDown();
             }
 
             override fun onError(errorMessage: String?) {
                 error = "error :" + errorMessage
+                countDownResponse.countDown();
             }
         })
-        Thread.sleep(500)
+        countDownResponse.await()
         System.out.println("sessionKey : " + sessionKeyCreated)
         Assert.assertTrue("Session key Error " + error, StringUtils.isBlank(error));
         Assert.assertTrue("Session key empty", StringUtils.isNotBlank(sessionKeyCreated));
