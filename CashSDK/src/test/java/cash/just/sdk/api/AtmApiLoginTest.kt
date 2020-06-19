@@ -1,5 +1,7 @@
-package cash.just.sdk
+package cash.just.sdk.api
 
+import cash.just.sdk.Cash
+import cash.just.sdk.CashSDK
 import com.github.tomakehurst.wiremock.client.WireMock
 import org.apache.commons.lang3.StringUtils
 import org.junit.Assert

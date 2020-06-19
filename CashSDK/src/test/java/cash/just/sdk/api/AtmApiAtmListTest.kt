@@ -1,6 +1,7 @@
-package cash.just.sdk
+package cash.just.sdk.api
 
 import android.widget.Toast
+import cash.just.sdk.CashSDK
 import cash.just.sdk.model.AtmListResponse
 import com.github.tomakehurst.wiremock.client.WireMock
 import org.apache.commons.lang3.StringUtils
