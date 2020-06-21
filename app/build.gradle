@@ -32,11 +32,7 @@ android {
         targetCompatibility = 1.8
     }
 
-    android.variantFilter { variant ->
-        if( variant.buildType.name.endsWith('release')) {
-            variant.setIgnore(true);
-        }
-    }
+
 }
 
 dependencies {
