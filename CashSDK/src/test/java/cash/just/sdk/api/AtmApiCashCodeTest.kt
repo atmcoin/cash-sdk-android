@@ -319,5 +319,6 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         Assert.assertEquals("expiration OK", "2020-06-00T00:00:00Z",cashStatus.expiration);
         Assert.assertEquals("longitude OK", "-30.00",cashStatus.longitude);
         Assert.assertEquals("latitude OK", "30.00",cashStatus.latitude);
+        Assert.assertEquals("latitude OK", CodeStatus.NEW_CODE,cashStatus.getCodeStatus());
     }
 }
