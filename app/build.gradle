@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+sonarqube {
+    skipProject = true
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -28,6 +32,11 @@ android {
         targetCompatibility = 1.8
     }
 
+    android.variantFilter { variant ->
+        if( variant.buildType.name.endsWith('release')) {
+            variant.setIgnore(true);
+        }
+    }
 }
 
 dependencies {
