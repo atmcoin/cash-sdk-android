@@ -1,4 +1,5 @@
 apply plugin: 'jacoco'
+apply plugin: 'com.github.dawnwords.jacoco.badge'
 
 jacoco {
     toolVersion = "$jacocoVersion"
@@ -19,25 +20,24 @@ task jacocoTestReport(type: JacocoReport) {
     }
 
     def execution = []
-
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
 
-
-        additionalClassDirs     fileTree(dir: "$project.buildDir/intermediates/javac/debug", excludes: fileFilter)
-        additionalClassDirs  fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
-        additionalSourceDirs       files("$project.projectDir/src/main/java")
-        execution     << fileTree(dir: project.buildDir,
-                includes: ['jacoco/testDebugUnitTest.exec','outputs/code_coverage/debugAndroidTest/connected/**/*.ec'])
-
-
-
+    additionalClassDirs fileTree(dir: "$project.buildDir/intermediates/javac/debug", excludes: fileFilter)
+    additionalClassDirs fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
+    additionalSourceDirs files("$project.projectDir/src/main/java")
+    execution << fileTree(dir: project.buildDir,
+            includes: ['jacoco/testDebugUnitTest.exec', 'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'])
 
     print execution
-    executionData{
+    executionData {
         files(execution)
     }
+}
 
-
-
+jacocoBadgeGenSetting {
+    jacocoReportPath  "$buildDir/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+    readmePath "$projectDir/../README.md"
+    // since v0.2.0, percentage limitation (0-100) for different type of coverage
+    limit = ['instruction': 0, 'branch': 0, 'line': 0, 'method': 0, 'class': 0]
 }
 
