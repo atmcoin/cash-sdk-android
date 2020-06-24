@@ -34,11 +34,10 @@ jobs:
           command: |
             ./gradlew --console=plain jacocoTestReport
 
-    - run:
-        #gradle jacoco
-        name: gradle jacoco badge
-        command: |
-          ./gradlew --console=plain :CashSDK:generateJacocoBadge
+      - run:
+          name: gradle jacoco badge
+          command: |
+            ./gradlew --console=plain :CashSDK:generateJacocoBadge
 
     # SONAR
       - run:
