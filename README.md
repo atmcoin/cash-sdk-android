@@ -7,6 +7,11 @@ SDK to convert Crypto to Cash direct at thousands of ATMs
 ![BRANCH](https://img.shields.io/badge/branch--coverage-52%25-orange.svg)
 ![COMPLEXITY](https://img.shields.io/badge/complexity-3.34-brightgreen.svg)
 
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=atmcoin_cash-sdk-android&metric=alert_status)](https://sonarcloud.io/dashboard?id=atmcoin_atmcoin_cash-sdk-android) 
+[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=atmcoin_cash-sdk-android&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=atmcoin_atmcoin_cash-sdk-android)
+[![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=atmcoin_cash-sdk-android&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=atmcoin_atmcoin_cash-sdk-android)
+[![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=atmcoin_cash-sdk-android&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=atmcoin_atmcoin_cash-sdk-android)
+
 Are you looking for the ios version of the CashSDK? 
 
 https://github.com/atmcoin/cash-sdk-ios/
