@@ -34,6 +34,11 @@ jobs:
           command: |
             ./gradlew --console=plain jacocoTestReport
 
+    - run:
+        #gradle jacoco
+        name: gradle jacoco badge
+        command: |
+          ./gradlew --console=plain :CashSDK:generateJacocoBadge
 
     # SONAR
       - run:
@@ -62,7 +67,6 @@ jobs:
             ls -l ./CashSDK/build
             cp -r ./CashSDK/build/reports ~/atrifact;
             cp -r ./CashSDK/build/test-results ~/atrifact;
-
 
           when: always
       - store_test_results:
