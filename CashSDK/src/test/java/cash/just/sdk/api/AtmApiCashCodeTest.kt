@@ -140,13 +140,13 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
                 )
         )
 
-        var error: String? = "";
+        var error: String? = ""
         lateinit  var cashCodeResponse: Response<CashCodeResponse>
         val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.createCashCode("1234","2","22222").enqueue(object : retrofit2.Callback<CashCodeResponse> {
             override fun onFailure(call: Call<CashCodeResponse>, t: Throwable) {
                 error = t.message
-                countDownResponse.countDown();
+                countDownResponse.countDown()
             }
 
             override fun onResponse(call: Call<CashCodeResponse>, response: Response<CashCodeResponse>) {
@@ -162,7 +162,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         Assert.assertFalse("isSuccessful$error", cashCodeResponse.isSuccessful)
         Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
         println("cashCodeResponse.body() : $cashCodeResponse")
-        Assert.assertEquals("Result OK", "Server Error",cashCodeResponse.message())
+        Assert.assertEquals("Result OK", "Server Error", cashCodeResponse.message())
 
     }
 
@@ -188,7 +188,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
 
         var error: String? = ""
         lateinit  var cashCodeResponse: Response<CashCodeResponse>
-        val countDownResponse : CountDownLatch = CountDownLatch(1)
+        val countDownResponse = CountDownLatch(1)
         CashSDK.createCashCode("1234","20","22222").enqueue(object : retrofit2.Callback<CashCodeResponse> {
             override fun onFailure(call: Call<CashCodeResponse>, t: Throwable) {
                 error = t.message
@@ -215,7 +215,6 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         Assert.assertEquals("address OK", "address1111", cashCode.address)
         Assert.assertEquals("unitPrice OK", "8122", cashCode.unitPrice)
         Assert.assertEquals("usdAmount OK", "20", cashCode.usdAmount)
-
     }
 
 

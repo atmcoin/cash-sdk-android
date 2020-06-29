@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call<AtmListResponse>, response: Response<AtmListResponse>) {
+                    response.isSuccessful
                     list.setText(response.body()!!.data.toString())
                 }
             })

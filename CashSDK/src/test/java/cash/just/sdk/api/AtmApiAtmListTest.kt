@@ -30,7 +30,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
 
         stubFor(
             get(urlEqualTo("/atm/wac/atm/list"))
-                .withHeader("sessionKey",equalTo(SESSION_KEY))
+                .withHeader("sessionKey", equalTo(SESSION_KEY))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
@@ -39,9 +39,9 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
                 )
         )
 
-        var error: String? = "";
+        var error: String? = ""
         lateinit  var atms: Response<AtmListResponse>
-        val countDownResponse : CountDownLatch = CountDownLatch(1)
+        val countDownResponse = CountDownLatch(1)
         CashSDK.getAtmList().enqueue(object : retrofit2.Callback<AtmListResponse> {
             override fun onFailure(call: Call<AtmListResponse>, t: Throwable) {
                 error = t.message
@@ -57,7 +57,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
         countDownResponse.await()
 
         println("Error : $error")
-        Assert.assertNotNull("Session  created ", atms);
+        Assert.assertNotNull("Session  created ", atms)
         Assert.assertTrue("isSuccessful$error", atms.isSuccessful)
         Assert.assertTrue("Error  Empty $error", StringUtils.isBlank(error))
 
@@ -96,7 +96,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
         )
 
         var error: String? = "";
-        lateinit  var atms: Response<AtmListResponse>
+        lateinit  var ATMs: Response<AtmListResponse>
         val countDownResponse = CountDownLatch(1)
         CashSDK.getAtmList().enqueue(object : retrofit2.Callback<AtmListResponse> {
             override fun onFailure(call: Call<AtmListResponse>, t: Throwable) {
@@ -105,7 +105,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
             }
 
             override fun onResponse(call: Call<AtmListResponse>, response: Response<AtmListResponse>) {
-                atms = response;
+                ATMs = response;
                 countDownResponse.countDown();
             }
         })
@@ -113,11 +113,9 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
         countDownResponse.await()
 
         println("Error : $error")
-        Assert.assertNotNull("Session  created ", atms);
-        Assert.assertFalse("isSuccessful$error", atms.isSuccessful);
-
+        Assert.assertNotNull("Session  created", ATMs)
+        Assert.assertFalse("isSuccessful$error", ATMs.isSuccessful)
     }
-
 
     @Test
     fun restAtmListNearSuccess() {
@@ -147,7 +145,6 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
             override fun onResponse(call: Call<AtmListResponse>, response: Response<AtmListResponse>) {
                 atms = response
                 countDownResponse.countDown()
-
             }
         })
 
