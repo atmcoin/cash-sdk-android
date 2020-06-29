@@ -1,9 +1,8 @@
 package cash.just.sdk.api
 
-import android.widget.Toast
 import cash.just.sdk.CashSDK
 import cash.just.sdk.model.*
-import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.apache.commons.lang3.StringUtils
 import org.junit.Assert
 import org.junit.FixMethodOrder
@@ -11,7 +10,6 @@ import org.junit.Test
 import org.junit.runners.MethodSorters
 import retrofit2.Call
 import retrofit2.Response
-import com.github.tomakehurst.wiremock.client.WireMock.*
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -29,9 +27,9 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
     var RESPONSE_CODE_CHECK_ERROR="{\"result\": \"error\",\"error\": {\"code\": \"\",\"server_message\": \"Purchase code not found!\"},\"data\": null}"
 
     @Test
-    fun RestVerificationCodeError() {
-        System.out.println("Start : RestVerificationCodeError" )
-        InitSession()
+    fun restVerificationCodeError() {
+        println("Start : RestVerificationCodeError" )
+        initSession()
 
         stubFor(
             post(urlPathEqualTo("/atm/wac/pcode/verify"))
@@ -48,7 +46,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
                 )
         )
 
-        var error: String? = "";
+        var error: String? = ""
         lateinit  var verificationCodeResponse: Response<SendVerificationCodeResponse>
         val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.sendVerificationCode("first","last",null,null).enqueue(object : retrofit2.Callback<SendVerificationCodeResponse> {
@@ -65,20 +63,19 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
 
         countDownResponse.await()
 
-        System.out.println("Error : " + error)
-        Assert.assertNotNull("Session  created ", verificationCodeResponse);
-        Assert.assertFalse("isSuccessful" + error, verificationCodeResponse.isSuccessful);
-        Assert.assertTrue("Error  Empty " + error, StringUtils.isBlank(error));
-        System.out.println("verificationCodeResponse.body() : " + verificationCodeResponse)
-        Assert.assertEquals("Result OK", "Server Error",verificationCodeResponse.message());
-
+        println("Error : $error")
+        Assert.assertNotNull("Session  created ", verificationCodeResponse)
+        Assert.assertFalse("isSuccessful$error", verificationCodeResponse.isSuccessful)
+        Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
+        println("verificationCodeResponse.body() : $verificationCodeResponse")
+        Assert.assertEquals("Result OK", "Server Error", verificationCodeResponse.message())
     }
 
 
     @Test
-    fun RestVerificationCodeSuccess() {
-        System.out.println("Start : RestVerificationCodeSuccess" )
-        InitSession()
+    fun restVerificationCodeSuccess() {
+        println("Start : RestVerificationCodeSuccess" )
+        initSession()
 
         stubFor(
             post(urlPathEqualTo("/atm/wac/pcode/verify"))
@@ -88,7 +85,6 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
                 .withQueryParam("first_name",equalTo("first"))
                 .withQueryParam("last_name",equalTo("last"))
 
-
                 .willReturn(
                     aResponse()
                         .withStatus(200)
@@ -97,7 +93,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
                 )
         )
 
-        var error: String? = "";
+        var error: String? = ""
         lateinit  var verificationCodeResponse: Response<SendVerificationCodeResponse>
         val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.sendVerificationCode("first","last","00001111","email@atm").enqueue(object : retrofit2.Callback<SendVerificationCodeResponse> {
@@ -114,28 +110,27 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
 
         countDownResponse.await()
 
-        System.out.println("Error : " + error)
-        Assert.assertNotNull("Session  created ", verificationCodeResponse);
-        Assert.assertTrue("isSuccessful" + error, verificationCodeResponse.isSuccessful);
-        Assert.assertTrue("Error  Empty " + error, StringUtils.isBlank(error));
-        System.out.println("verificationCodeResponse.body() : " + verificationCodeResponse.body())
-        Assert.assertEquals("Result OK", "OK",verificationCodeResponse.body()!!.data.items.get(0).result);
+        println("Error : $error")
+        Assert.assertNotNull("Session  created ", verificationCodeResponse)
+        Assert.assertTrue("isSuccessful$error", verificationCodeResponse.isSuccessful)
+        Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
+        println("verificationCodeResponse.body() : " + verificationCodeResponse.body())
+        Assert.assertEquals("Result OK", "OK", verificationCodeResponse.body()!!.data.items[0].result)
 
 
     }
 
-
     @Test
-    fun RestCreateCodeError() {
-        System.out.println("Start : RestCreateCodeError" )
-        InitSession()
+    fun restCreateCodeError() {
+        println("Start : RestCreateCodeError" )
+        initSession()
 
         stubFor(
             post(urlPathEqualTo("/atm/wac/pcode"))
-                .withHeader("sessionKey",equalTo(SESSION_KEY))
-                .withQueryParam("atm_id",equalTo("1234"))
-                .withQueryParam("amount",equalTo("2"))
-                .withQueryParam("verification_code",equalTo("22222"))
+                .withHeader("sessionKey", equalTo(SESSION_KEY))
+                .withQueryParam("atm_id", equalTo("1234"))
+                .withQueryParam("amount", equalTo("2"))
+                .withQueryParam("verification_code", equalTo("22222"))
 
                 .willReturn(
                     aResponse()
@@ -145,36 +140,36 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
                 )
         )
 
-        var error: String? = "";
+        var error: String? = ""
         lateinit  var cashCodeResponse: Response<CashCodeResponse>
         val countDownResponse : CountDownLatch = CountDownLatch(1)
         CashSDK.createCashCode("1234","2","22222").enqueue(object : retrofit2.Callback<CashCodeResponse> {
             override fun onFailure(call: Call<CashCodeResponse>, t: Throwable) {
                 error = t.message
-                countDownResponse.countDown();
+                countDownResponse.countDown()
             }
 
             override fun onResponse(call: Call<CashCodeResponse>, response: Response<CashCodeResponse>) {
-                cashCodeResponse = response;
-                countDownResponse.countDown();
+                cashCodeResponse = response
+                countDownResponse.countDown()
             }
         })
 
         countDownResponse.await()
 
-        System.out.println("Error : " + error)
-        Assert.assertNotNull("Session  created ", cashCodeResponse);
-        Assert.assertFalse("isSuccessful" + error, cashCodeResponse.isSuccessful);
-        Assert.assertTrue("Error  Empty " + error, StringUtils.isBlank(error));
-        System.out.println("cashCodeResponse.body() : " + cashCodeResponse)
-        Assert.assertEquals("Result OK", "Server Error",cashCodeResponse.message());
+        println("Error : $error")
+        Assert.assertNotNull("Session  created ", cashCodeResponse)
+        Assert.assertFalse("isSuccessful$error", cashCodeResponse.isSuccessful)
+        Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
+        println("cashCodeResponse.body() : $cashCodeResponse")
+        Assert.assertEquals("Result OK", "Server Error", cashCodeResponse.message())
 
     }
 
     @Test
-    fun RestCreateCodeSucces() {
-        System.out.println("Start : RestCreateCodeSucces" )
-        InitSession()
+    fun restCreateCodeSuccess() {
+        println("Start : RestCreateCodeSuccess" )
+        initSession()
 
         stubFor(
             post(urlPathEqualTo("/atm/wac/pcode"))
@@ -191,43 +186,42 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
                 )
         )
 
-        var error: String? = "";
+        var error: String? = ""
         lateinit  var cashCodeResponse: Response<CashCodeResponse>
-        val countDownResponse : CountDownLatch = CountDownLatch(1)
+        val countDownResponse = CountDownLatch(1)
         CashSDK.createCashCode("1234","20","22222").enqueue(object : retrofit2.Callback<CashCodeResponse> {
             override fun onFailure(call: Call<CashCodeResponse>, t: Throwable) {
                 error = t.message
-                countDownResponse.countDown();
+                countDownResponse.countDown()
             }
 
             override fun onResponse(call: Call<CashCodeResponse>, response: Response<CashCodeResponse>) {
-                cashCodeResponse = response;
-                countDownResponse.countDown();
+                cashCodeResponse = response
+                countDownResponse.countDown()
             }
         })
 
         countDownResponse.await()
 
-        System.out.println("Error : " + error)
-        Assert.assertNotNull("Session  created ", cashCodeResponse);
-        Assert.assertTrue("isSuccessful" + error, cashCodeResponse.isSuccessful);
-        Assert.assertTrue("Error  Empty " + error, StringUtils.isBlank(error));
-        System.out.println("verificationCodeResponse.body() : " + cashCodeResponse.body())
-        Assert.assertEquals("Result OK", 1,cashCodeResponse.body()!!.data.items.size);
-        var  cashCode:CashCode=cashCodeResponse.body()!!.data.items.get(0)
-        Assert.assertEquals("btc_amount OK", "0.002",cashCode.btc_amount);
-        Assert.assertEquals("secureCode OK", "secure1111",cashCode.secureCode);
-        Assert.assertEquals("address OK", "address1111",cashCode.address);
-        Assert.assertEquals("unitPrice OK", "8122",cashCode.unitPrice);
-        Assert.assertEquals("usdAmount OK", "20",cashCode.usdAmount);
-
+        println("Error : $error")
+        Assert.assertNotNull("Session  created ", cashCodeResponse)
+        Assert.assertTrue("isSuccessful$error", cashCodeResponse.isSuccessful)
+        Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
+        println("verificationCodeResponse.body() : " + cashCodeResponse.body())
+        Assert.assertEquals("Result OK", 1, cashCodeResponse.body()!!.data.items.size)
+        val cashCode:CashCode = cashCodeResponse.body()!!.data.items[0]
+        Assert.assertEquals("btc_amount OK", "0.002", cashCode.btc_amount)
+        Assert.assertEquals("secureCode OK", "secure1111", cashCode.secureCode)
+        Assert.assertEquals("address OK", "address1111", cashCode.address)
+        Assert.assertEquals("unitPrice OK", "8122", cashCode.unitPrice)
+        Assert.assertEquals("usdAmount OK", "20", cashCode.usdAmount)
     }
 
 
     @Test
-    fun RestCheckCodeError() {
-        System.out.println("Start : RestCheckCodeError" )
-        InitSession()
+    fun restCheckCodeError() {
+        println("Start : RestCheckCodeError" )
+        initSession()
 
         stubFor(
             get(urlPathEqualTo("/atm/wac/pcode/111"))
@@ -246,32 +240,30 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         CashSDK.checkCashCodeStatus("111").enqueue(object : retrofit2.Callback<CashCodeStatusResponse> {
             override fun onFailure(call: Call<CashCodeStatusResponse>, t: Throwable) {
                 error = t.message
-                countDownResponse.countDown();
+                countDownResponse.countDown()
             }
 
             override fun onResponse(call: Call<CashCodeStatusResponse>, response: Response<CashCodeStatusResponse>) {
-                cashCodeStatusResponse = response;
-                countDownResponse.countDown();
+                cashCodeStatusResponse = response
+                countDownResponse.countDown()
             }
         })
 
         countDownResponse.await()
 
-        System.out.println("Error : " + error)
-        Assert.assertNotNull("Session  created ", cashCodeStatusResponse);
-        Assert.assertFalse("isSuccessful" + error, cashCodeStatusResponse.isSuccessful);
-        Assert.assertTrue("Error  Empty " + error, StringUtils.isBlank(error));
-        System.out.println("cashCodeResponse.body() : " + cashCodeStatusResponse)
-        Assert.assertEquals("Result OK", "Server Error",cashCodeStatusResponse.message());
-
-
+        println("Error : $error")
+        Assert.assertNotNull("Session created ", cashCodeStatusResponse)
+        Assert.assertFalse("isSuccessful$error", cashCodeStatusResponse.isSuccessful)
+        Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
+        println("cashCodeResponse.body() : $cashCodeStatusResponse")
+        Assert.assertEquals("Result OK", "Server Error", cashCodeStatusResponse.message())
     }
 
 
     @Test
-    fun RestCheckCodeSuccess() {
-        System.out.println("Start : RestCheckCodeSuccess" )
-        InitSession()
+    fun restCheckCodeSuccess() {
+        println("Start : RestCheckCodeSuccess" )
+        initSession()
 
         stubFor(
             get(urlPathEqualTo("/atm/wac/pcode/111"))
@@ -301,24 +293,24 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
 
         countDownResponse.await()
 
-        System.out.println("Error : " + error)
-        Assert.assertNotNull("Session  created ", cashCodeStatusResponse);
-        Assert.assertTrue("isSuccessful" + error, cashCodeStatusResponse.isSuccessful);
-        Assert.assertTrue("Error  Empty " + error, StringUtils.isBlank(error));
-        System.out.println("cashCodeStatusResponse.body() : " + cashCodeStatusResponse.body())
-        Assert.assertEquals("Result OK", 1,cashCodeStatusResponse.body()!!.data!!.items.size);
-        var  cashStatus:CashStatus=cashCodeStatusResponse.body()!!.data!!.items.get(0)
+        println("Error : $error")
+        Assert.assertNotNull("Session created ", cashCodeStatusResponse)
+        Assert.assertTrue("isSuccessful$error", cashCodeStatusResponse.isSuccessful)
+        Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
+        println("cashCodeStatusResponse.body() : " + cashCodeStatusResponse.body())
+        Assert.assertEquals("Result OK", 1, cashCodeStatusResponse.body()!!.data!!.items.size)
+        val cashStatus = cashCodeStatusResponse.body()!!.data!!.items[0]
 
-        Assert.assertEquals("btc_amount OK", "8078",cashStatus.atmId);
-        Assert.assertEquals("btc_amount OK", "0.002",cashStatus.btc_amount);
-        Assert.assertEquals("code OK", "pcode",cashStatus.code);
-        Assert.assertEquals("address OK", "address1111",cashStatus.address);
-        Assert.assertEquals("unitPrice OK", "8122",cashStatus.unitPrice);
-        Assert.assertEquals("usdAmount OK", "20",cashStatus.usdAmount);
-        Assert.assertEquals("description OK", "loc description",cashStatus.description);
-        Assert.assertEquals("expiration OK", "2020-06-00T00:00:00Z",cashStatus.expiration);
-        Assert.assertEquals("longitude OK", "-30.00",cashStatus.longitude);
-        Assert.assertEquals("latitude OK", "30.00",cashStatus.latitude);
-        Assert.assertEquals("latitude OK", CodeStatus.NEW_CODE,cashStatus.getCodeStatus());
+        Assert.assertEquals("btc_amount OK", "8078", cashStatus.atmId)
+        Assert.assertEquals("btc_amount OK", "0.002", cashStatus.btc_amount)
+        Assert.assertEquals("code OK", "pcode", cashStatus.code)
+        Assert.assertEquals("address OK", "address1111", cashStatus.address)
+        Assert.assertEquals("unitPrice OK", "8122", cashStatus.unitPrice)
+        Assert.assertEquals("usdAmount OK", "20", cashStatus.usdAmount)
+        Assert.assertEquals("description OK", "loc description", cashStatus.description)
+        Assert.assertEquals("expiration OK", "2020-06-00T00:00:00Z", cashStatus.expiration)
+        Assert.assertEquals("longitude OK", "-30.00", cashStatus.longitude)
+        Assert.assertEquals("latitude OK", "30.00", cashStatus.latitude)
+        Assert.assertEquals("latitude OK", CodeStatus.NEW_CODE,cashStatus.getCodeStatus())
     }
 }
