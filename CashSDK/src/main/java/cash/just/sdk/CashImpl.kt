@@ -19,7 +19,7 @@ class CashImpl:Cash {
     private lateinit var retrofit: WacAPI
 
     override fun createSession(network: BtcNetwork, listener: Cash.SessionCallback) {
-        val serverUrl = when(network){
+        val serverUrl = when(network) {
             MAIN_NET -> {
                 "https://api-prd.just.cash/"
             }

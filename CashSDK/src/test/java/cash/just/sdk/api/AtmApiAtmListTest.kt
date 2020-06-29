@@ -26,7 +26,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
     @Test
     fun restAtmListSuccess() {
         println("Start : RestAtmListSuccess" )
-        InitSession()
+        initSession()
 
         stubFor(
             get(urlEqualTo("/atm/wac/atm/list"))
@@ -82,7 +82,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
     @Test
     fun restAtmListError() {
         println("Start : RestAtmListError" )
-        InitSession()
+        initSession()
 
         stubFor(
             get(urlEqualTo("/atm/wac/atm/list"))
@@ -120,7 +120,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
     @Test
     fun restAtmListNearSuccess() {
         println("Start : RestAtmListNearSuccess" )
-        InitSession()
+        initSession()
 
         stubFor(
             get(urlEqualTo("/atm/wac/atm/near/latlon/2/1"))

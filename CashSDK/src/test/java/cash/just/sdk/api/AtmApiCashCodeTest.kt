@@ -29,7 +29,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
     @Test
     fun restVerificationCodeError() {
         println("Start : RestVerificationCodeError" )
-        InitSession()
+        initSession()
 
         stubFor(
             post(urlPathEqualTo("/atm/wac/pcode/verify"))
@@ -75,7 +75,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
     @Test
     fun restVerificationCodeSuccess() {
         println("Start : RestVerificationCodeSuccess" )
-        InitSession()
+        initSession()
 
         stubFor(
             post(urlPathEqualTo("/atm/wac/pcode/verify"))
@@ -110,7 +110,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
 
         countDownResponse.await()
 
-        println("Error : " + error)
+        println("Error : $error")
         Assert.assertNotNull("Session  created ", verificationCodeResponse)
         Assert.assertTrue("isSuccessful$error", verificationCodeResponse.isSuccessful)
         Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
@@ -123,7 +123,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
     @Test
     fun restCreateCodeError() {
         println("Start : RestCreateCodeError" )
-        InitSession()
+        initSession()
 
         stubFor(
             post(urlPathEqualTo("/atm/wac/pcode"))
@@ -169,7 +169,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
     @Test
     fun restCreateCodeSuccess() {
         println("Start : RestCreateCodeSuccess" )
-        InitSession()
+        initSession()
 
         stubFor(
             post(urlPathEqualTo("/atm/wac/pcode"))
@@ -221,7 +221,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
     @Test
     fun restCheckCodeError() {
         println("Start : RestCheckCodeError" )
-        InitSession()
+        initSession()
 
         stubFor(
             get(urlPathEqualTo("/atm/wac/pcode/111"))
@@ -263,7 +263,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
     @Test
     fun restCheckCodeSuccess() {
         println("Start : RestCheckCodeSuccess" )
-        InitSession()
+        initSession()
 
         stubFor(
             get(urlPathEqualTo("/atm/wac/pcode/111"))

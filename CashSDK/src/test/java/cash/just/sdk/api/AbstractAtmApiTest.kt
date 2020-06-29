@@ -19,17 +19,14 @@ import java.util.concurrent.CountDownLatch
  */
 abstract class AbstractAtmApiTest {
 
-    public var SESSION_KEY :String= "1111"
-    public var LOGIN_RESPONSE :String="{\"result\": \"ok\",\"error\": null,\"data\": {\"sessionKey\": \"" + SESSION_KEY + "\"}}"
+    var SESSION_KEY = "1111"
+    var LOGIN_RESPONSE  =
+        "{\"result\": \"ok\",\"error\": null,\"data\": {\"sessionKey\": \"$SESSION_KEY\"}}"
     @Rule
     @JvmField
     var wireMockRule: WireMockRule = WireMockRule(WireMockConfiguration().notifier(ConsoleNotifier(true)).port(8080))
 
-
-
-
-    fun InitSession() {
-
+    fun initSession() {
         stubFor(
             post(urlEqualTo("/atm/wac/guest/login"))
                 .willReturn(
@@ -40,25 +37,24 @@ abstract class AbstractAtmApiTest {
                 )
         )
         val server = Cash.BtcNetwork.TEST_LOCAL
-        var sessionKeyCreated: String = "";
-        var error: String = "";
-        val countDownResponse : CountDownLatch = CountDownLatch(1)
+        var sessionKeyCreated = ""
+        var error = ""
+        val countDownResponse = CountDownLatch(1)
         CashSDK.createSession(server, object : Cash.SessionCallback {
             override fun onSessionCreated(sessionKey: String) {
-                sessionKeyCreated = sessionKey;
-                countDownResponse.countDown();
+                sessionKeyCreated = sessionKey
+                countDownResponse.countDown()
             }
 
             override fun onError(errorMessage: String?) {
-                error = "error :" + errorMessage
-                countDownResponse.countDown();
+                error = "error :$errorMessage"
+                countDownResponse.countDown()
             }
         })
         countDownResponse.await()
-        System.out.println("sessionKey : " + sessionKeyCreated)
-        Assert.assertTrue("Session key Error " + error, StringUtils.isBlank(error));
-        Assert.assertTrue("Session key empty", StringUtils.isNotBlank(sessionKeyCreated));
-
-        Assert.assertTrue("Session  created "  , CashSDK.isSessionCreated());
+        println("sessionKey : $sessionKeyCreated")
+        Assert.assertTrue("Session key Error $error", StringUtils.isBlank(error))
+        Assert.assertTrue("Session key empty", StringUtils.isNotBlank(sessionKeyCreated))
+        Assert.assertTrue("Session  created "  , CashSDK.isSessionCreated())
     }
 }
