@@ -50,7 +50,12 @@ jobs:
 #             echo Sonar Skiped
 #            fi
 #
-            
+
+      - run:
+          name: gradle Integration Test
+          command: |
+            ./gradlew cleanTest test -PintegrationTest=true
+
       # save cache
       - save_cache:
           paths:
