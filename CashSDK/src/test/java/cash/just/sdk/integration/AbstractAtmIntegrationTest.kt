@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils
 import org.junit.Assert
 import org.junit.experimental.categories.Category
 import java.util.concurrent.CountDownLatch
+import java.util.regex.Pattern
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -17,7 +18,7 @@ import java.util.concurrent.CountDownLatch
 abstract class AbstractAtmIntegrationTest {
 
 
-
+    var decimalPattern:Pattern = Pattern.compile("\\-?\\d+\\.\\d+");
 
     fun initSession() {
 
@@ -40,6 +41,6 @@ abstract class AbstractAtmIntegrationTest {
         println("sessionKey : $sessionKeyCreated")
         Assert.assertTrue("Session key Error $error", StringUtils.isBlank(error))
         Assert.assertTrue("Session key empty", StringUtils.isNotBlank(sessionKeyCreated))
-        Assert.assertTrue("Session  created "  , CashSDK.isSessionCreated())
+        Assert.assertTrue("Session  created ", CashSDK.isSessionCreated())
     }
 }
