@@ -25,7 +25,6 @@ android {
             useJUnit {
                 if (project.hasProperty('integrationTest') && integrationTest == "true") {
                     includeCategories 'cash.just.sdk.IntegrationTest'
-                    reportDir "$project.buildDir/integrationTest"
 
                 } else {
                     excludeCategories 'cash.just.sdk.IntegrationTest'
