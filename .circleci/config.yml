@@ -40,16 +40,16 @@ jobs:
             ./gradlew --console=plain :CashSDK:generateJacocoBadge
 
     # SONAR
-#      - run:
-#          name:  sonar check
-#          command: |
-#            echo SonarStart
-#            if [ ! -z "$sonar_login" ]; then
-#                  ./gradlew  --console=plain --stacktrace  sonarqube  -Dsonar.organization=$sonar_organization  -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectName=cash-sdk-android -Dsonar.projectKey=atmcoin_cash-sdk-android -Dsonar.login=$sonar_login   -Dsonar.branch.name=$CIRCLE_BRANCH  -Dsonar.coverage.jacoco.xmlReportPaths=/home/circleci/project/CashSDK/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml -Dsonar.junit.reportPaths=build/test-results/testDebugUnitTest
-#            else
-#             echo Sonar Skiped
-#            fi
-#
+      - run:
+          name:  sonar check
+          command: |
+            echo SonarStart
+            if [ ! -z "$sonar_login" ]; then
+                  ./gradlew  --console=plain --stacktrace  sonarqube  -Dsonar.organization=$sonar_organization  -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectName=cash-sdk-android -Dsonar.projectKey=atmcoin_cash-sdk-android -Dsonar.login=$sonar_login   -Dsonar.branch.name=$CIRCLE_BRANCH  -Dsonar.coverage.jacoco.xmlReportPaths=/home/circleci/project/CashSDK/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml -Dsonar.junit.reportPaths=build/test-results/testDebugUnitTest
+            else
+             echo Sonar Skiped
+            fi
+
 
       - run:
           name: gradle Integration Test
