@@ -2,8 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'maven-publish'
+apply plugin: 'maven'
+apply plugin: "org.sonarqube"
 
 apply from: rootProject.file("jacoco.gradle")
+
 
 sonarqube {
 
