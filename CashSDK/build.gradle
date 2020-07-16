@@ -19,6 +19,33 @@ android {
         consumerProguardFiles 'consumer-rules.pro'
     }
 
+    testOptions {
+
+        unitTests.all {
+            useJUnit {
+                if (project.hasProperty('integrationTest') && integrationTest == "true") {
+                    includeCategories 'cash.just.sdk.IntegrationTest'
+
+                } else {
+                    excludeCategories 'cash.just.sdk.IntegrationTest'
+                }
+            }
+
+            test {
+                if (project.hasProperty('integrationTest') && integrationTest == "true") {
+
+                    //Get last path of default set path.
+                    def junitXmlTestTaskName = file("$reports.junitXml.destination").name
+                    def htmlTestTaskName = file("$reports.html.destination").name
+
+                    reports.junitXml.destination = file("$project.buildDir/reports/integrationTest/$junitXmlTestTaskName")
+                    reports.html.destination = file("$project.buildDir/reports/integrationTest/$htmlTestTaskName")
+
+                }
+
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
