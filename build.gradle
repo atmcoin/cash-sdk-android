@@ -15,10 +15,12 @@ buildscript {
 
         classpath "org.jacoco:org.jacoco.core:$jacocoVersion"
         classpath "com.github.dawnwords:jacoco-badge-gradle-plugin:0.2.0"
+		classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$sonar_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
+
 
 
 allprojects {

@@ -3,7 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+apply plugin: "org.sonarqube"
+
 apply from: rootProject.file("jacoco.gradle")
+
+
+sonarqube {
+
+
+}
 
 android {
     compileSdkVersion 29
