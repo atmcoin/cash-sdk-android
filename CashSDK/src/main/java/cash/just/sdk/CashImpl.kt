@@ -45,7 +45,11 @@ class CashImpl:Cash {
                     sessionKey = response.body()!!.data.sessionKey
                     listener.onSessionCreated(sessionKey)
                 } else {
-                    listener.onError("${response.code()}")
+                    var message = response.code().toString()
+                    if (response.code() == 502) {
+                        message = "$message: Service Temporary Not Available"
+                    }
+                    listener.onError(message)
                 }
             }
         })
