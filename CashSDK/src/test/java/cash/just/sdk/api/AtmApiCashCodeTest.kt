@@ -32,7 +32,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            post(urlPathEqualTo("/atm/wac/pcode/verify"))
+            post(urlPathEqualTo("/wac/wac/pcode/verify"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .withQueryParam("first_name",equalTo("first"))
                 .withQueryParam("last_name",equalTo("last"))
@@ -78,7 +78,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            post(urlPathEqualTo("/atm/wac/pcode/verify"))
+            post(urlPathEqualTo("/wac/wac/pcode/verify"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .withQueryParam("phone_number",equalTo("00001111"))
                 .withQueryParam("email",equalTo("email@atm"))
@@ -126,7 +126,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            post(urlPathEqualTo("/atm/wac/pcode"))
+            post(urlPathEqualTo("/wac/pcode"))
                 .withHeader("sessionKey", equalTo(SESSION_KEY))
                 .withQueryParam("atm_id", equalTo("1234"))
                 .withQueryParam("amount", equalTo("2"))
@@ -172,7 +172,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            post(urlPathEqualTo("/atm/wac/pcode"))
+            post(urlPathEqualTo("/wac/pcode"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .withQueryParam("atm_id",equalTo("1234"))
                 .withQueryParam("amount",equalTo("20"))
@@ -224,7 +224,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            get(urlPathEqualTo("/atm/wac/pcode/111"))
+            get(urlPathEqualTo("/wac/pcode/111"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .willReturn(
                     aResponse()
@@ -266,7 +266,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            get(urlPathEqualTo("/atm/wac/pcode/111"))
+            get(urlPathEqualTo("/wac/pcode/111"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .willReturn(
                     aResponse()

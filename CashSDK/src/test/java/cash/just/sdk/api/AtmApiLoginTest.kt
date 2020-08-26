@@ -30,7 +30,7 @@ class AtmApiLoginTest : AbstractAtmApiTest() {
         println("Start : RestAtmSessionCreationError502" )
 
         WireMock.stubFor(
-            WireMock.post(WireMock.urlEqualTo("/atm/wac/guest/login"))
+            WireMock.post(WireMock.urlEqualTo("/wac/wac/guest/login"))
                 .willReturn(
                     WireMock.aResponse()
                         .withStatus(502)

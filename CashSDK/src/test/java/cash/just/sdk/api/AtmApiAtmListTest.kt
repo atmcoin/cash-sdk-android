@@ -29,7 +29,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            get(urlEqualTo("/atm/wac/atm/list"))
+            get(urlEqualTo("/wac/wac/atm/list"))
                 .withHeader("sessionKey", equalTo(SESSION_KEY))
                 .willReturn(
                     aResponse()
@@ -85,7 +85,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            get(urlEqualTo("/atm/wac/atm/list"))
+            get(urlEqualTo("/wac/wac/atm/list"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .willReturn(
                     aResponse()
@@ -123,7 +123,7 @@ class AtmApiAtmListTest : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            get(urlEqualTo("/atm/wac/atm/near/latlon/2/1"))
+            get(urlEqualTo("/wac/wac/atm/near/latlon/2/1"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .willReturn(
                     aResponse()

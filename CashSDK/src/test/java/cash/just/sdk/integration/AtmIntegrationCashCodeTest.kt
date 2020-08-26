@@ -1,11 +1,9 @@
 package cash.just.sdk.integration
 
-import cash.just.sdk.Cash
 import cash.just.sdk.CashSDK
 import cash.just.sdk.model.CashCodeResponse
 import cash.just.sdk.model.CashCodeStatusResponse
 import cash.just.sdk.model.SendVerificationCodeResponse
-import com.github.tomakehurst.wiremock.client.WireMock
 import org.apache.commons.lang3.StringUtils
 import org.junit.Assert
 import org.junit.FixMethodOrder
@@ -14,7 +12,6 @@ import org.junit.runners.MethodSorters
 import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -87,7 +84,7 @@ class AtmIntegrationCashCodeTest : AbstractAtmIntegrationTest() {
         Assert.assertFalse("isSuccessful$error", cashCodeResponse.isSuccessful)
         Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
         println("cashCodeResponse.body() : $cashCodeResponse")
-        Assert.assertEquals("Result OK", "500", cashCodeResponse.message())
+        Assert.assertEquals("Result OK", "404", cashCodeResponse.message())
 
     }
 
@@ -119,7 +116,7 @@ class AtmIntegrationCashCodeTest : AbstractAtmIntegrationTest() {
         Assert.assertFalse("isSuccessful$error", cashCodeStatusResponse.isSuccessful)
         Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
         println("cashCodeResponse.body() : $cashCodeStatusResponse")
-        Assert.assertEquals("Result OK", "500", cashCodeStatusResponse.message())
+        Assert.assertEquals("Result OK", "404", cashCodeStatusResponse.message())
     }
 
 
