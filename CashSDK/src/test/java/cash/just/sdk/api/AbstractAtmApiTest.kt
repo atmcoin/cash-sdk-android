@@ -28,7 +28,7 @@ abstract class AbstractAtmApiTest {
 
     fun initSession() {
         stubFor(
-            post(urlEqualTo("/atm/wac/guest/login"))
+            post(urlEqualTo("/wac/wac/guest/login"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
