@@ -35,7 +35,7 @@ class CashImpl:Cash {
             .addConverterFactory(MoshiConverterFactory.create())
             .build().create(WacAPI::class.java)
 
-        retrofit.login().enqueue(object: Callback<LoginResponse> {
+        retrofit.guestLogin().enqueue(object: Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 listener.onError(t.message)
             }
