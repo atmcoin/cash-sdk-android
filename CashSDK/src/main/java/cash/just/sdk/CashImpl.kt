@@ -114,7 +114,7 @@ class CashImpl:Cash {
     }
 
     override fun checkCashCodeStatus(code: String): Call<CashCodeStatusResponse> {
-        return retrofit.checkCodeStatus(code, sessionKey)
+        return retrofit.checkCodeStatus(sessionKey, code)
     }
 
     override fun createCashCode(atmId: String, amount: String, verificationCode: String): Call<CashCodeResponse> {

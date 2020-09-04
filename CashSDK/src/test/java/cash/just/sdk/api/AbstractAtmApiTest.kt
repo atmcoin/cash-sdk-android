@@ -18,7 +18,7 @@ import java.util.concurrent.CountDownLatch
  */
 abstract class AbstractAtmApiTest {
 
-    var SESSION_KEY = "1111"
+    var SESSION_KEY = "session234sdfsdfjhl"
     var LOGIN_RESPONSE  =
         "{\"result\": \"ok\",\"error\": null,\"data\": {\"sessionKey\": \"$SESSION_KEY\"}}"
     @Rule
