@@ -13,7 +13,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class CashImpl:Cash {
     private lateinit var sessionKey:String
     private lateinit var retrofit: WacAPI
-    private lateinit var serverUrl:BtcNetwork
+    private lateinit var network:BtcNetwork
 
     override fun createGuestSession(network: BtcNetwork, listener: Cash.SessionCallback) {
         initIfNeeded(network)
@@ -38,8 +38,9 @@ class CashImpl:Cash {
         })
     }
 
-    private fun initRetrofit(network: BtcNetwork){
-        val serverUrl = when(network) {
+    private fun initRetrofit(btcNetwork: BtcNetwork){
+        network = btcNetwork
+        val serverUrl = when(btcNetwork) {
             MAIN_NET -> {
                 "https://api-prd.just.cash/"
             }
@@ -56,10 +57,10 @@ class CashImpl:Cash {
             .build().create(WacAPI::class.java)
     }
 
-    private fun initIfNeeded(network: BtcNetwork) {
+    private fun initIfNeeded(btcNetwork: BtcNetwork) {
         if (!::retrofit.isInitialized) {
             initRetrofit(network)
-        } else if(!::serverUrl.isInitialized || serverUrl != network) {
+        } else if(!::network.isInitialized || network != btcNetwork) {
             initRetrofit(network)
         }
     }
