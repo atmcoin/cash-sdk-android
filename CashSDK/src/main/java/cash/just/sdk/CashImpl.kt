@@ -1,13 +1,9 @@
 package cash.just.sdk
 
+import android.util.Log
 import cash.just.sdk.Cash.BtcNetwork
 import cash.just.sdk.Cash.BtcNetwork.MAIN_NET
-import cash.just.sdk.model.AtmListResponse
-import cash.just.sdk.model.CashCodeResponse
-import cash.just.sdk.model.CashCodeStatusResponse
-import cash.just.sdk.model.LoginResponse
-import cash.just.sdk.model.SendVerificationCodeResponse
-import cash.just.sdk.model.WacAPI
+import cash.just.sdk.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,30 +13,17 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class CashImpl:Cash {
     private lateinit var sessionKey:String
     private lateinit var retrofit: WacAPI
+    private lateinit var network:BtcNetwork
 
-    override fun createSession(network: BtcNetwork, listener: Cash.SessionCallback) {
-        val serverUrl = when(network) {
-            MAIN_NET -> {
-                "https://api-prd.just.cash/"
-            }
-            BtcNetwork.TEST_NET -> {
-                "https://secure.just.cash/"
-            }
-            BtcNetwork.TEST_LOCAL-> {
-                "http://127.0.0.1:8080/"
-            }
-        }
+    override fun createGuestSession(network: BtcNetwork, listener: Cash.SessionCallback) {
+        initIfNeeded(network)
 
-        retrofit = Retrofit.Builder().baseUrl(serverUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build().create(WacAPI::class.java)
-
-        retrofit.login().enqueue(object: Callback<LoginResponse> {
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+        retrofit.guestLogin().enqueue(object: Callback<GuestResponse> {
+            override fun onFailure(call: Call<GuestResponse>, t: Throwable) {
                 listener.onError(t.message)
             }
 
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+            override fun onResponse(call: Call<GuestResponse>, response: Response<GuestResponse>) {
                 if (response.isSuccessful) {
                     sessionKey = response.body()!!.data.sessionKey
                     listener.onSessionCreated(sessionKey)
@@ -55,8 +38,71 @@ class CashImpl:Cash {
         })
     }
 
+    private fun initRetrofit(btcNetwork: BtcNetwork){
+        network = btcNetwork
+        val serverUrl = when(btcNetwork) {
+            MAIN_NET -> {
+                "https://api-prd.just.cash/"
+            }
+            BtcNetwork.TEST_NET -> {
+                "https://secure.just.cash/"
+            }
+            BtcNetwork.TEST_LOCAL-> {
+                "http://127.0.0.1:8080/"
+            }
+        }
+
+        retrofit = Retrofit.Builder().baseUrl(serverUrl)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build().create(WacAPI::class.java)
+    }
+
+    private fun initIfNeeded(btcNetwork: BtcNetwork) {
+        if (!::retrofit.isInitialized) {
+            initRetrofit(btcNetwork)
+        } else if(!::network.isInitialized || network != btcNetwork) {
+            initRetrofit(btcNetwork)
+        }
+    }
+
     override fun isSessionCreated() : Boolean {
         return this::sessionKey.isInitialized
+    }
+
+    override fun login(network: BtcNetwork, phoneNumber: String, listener: Cash.WacCallback) {
+        retrofit.login(sessionKey, phoneNumber).enqueue(object: Callback<WacBaseResponse> {
+            override fun onResponse(call: Call<WacBaseResponse>, response: Response<WacBaseResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()?.result?.toLowerCase() == "ok") {
+                        listener.onSucceed()
+                    } else {
+                        listener.onError("error")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<WacBaseResponse>, t: Throwable) {
+                listener.onError(t.message)
+            }
+        })
+    }
+
+    override fun register(network: BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.WacCallback) {
+        retrofit.register(sessionKey, phoneNumber, firstName, lastName).enqueue(object: Callback<WacBaseResponse> {
+            override fun onResponse(call: Call<WacBaseResponse>, response: Response<WacBaseResponse>) {
+                if (response.isSuccessful) {
+                   if (response.body()?.result?.toLowerCase() == "ok") {
+                       listener.onSucceed()
+                   } else {
+                       listener.onError("error")
+                   }
+                }
+            }
+
+            override fun onFailure(call: Call<WacBaseResponse>, t: Throwable) {
+                listener.onError(t.message)
+            }
+        })
     }
 
     override fun getAtmList(): Call<AtmListResponse> {
@@ -68,7 +114,7 @@ class CashImpl:Cash {
     }
 
     override fun checkCashCodeStatus(code: String): Call<CashCodeStatusResponse> {
-        return retrofit.checkCodeStatus(code, sessionKey)
+        return retrofit.checkCodeStatus(sessionKey, code)
     }
 
     override fun createCashCode(atmId: String, amount: String, verificationCode: String): Call<CashCodeResponse> {
