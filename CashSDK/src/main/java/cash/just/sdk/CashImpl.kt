@@ -59,9 +59,9 @@ class CashImpl:Cash {
 
     private fun initIfNeeded(btcNetwork: BtcNetwork) {
         if (!::retrofit.isInitialized) {
-            initRetrofit(network)
+            initRetrofit(btcNetwork)
         } else if(!::network.isInitialized || network != btcNetwork) {
-            initRetrofit(network)
+            initRetrofit(btcNetwork)
         }
     }
 
