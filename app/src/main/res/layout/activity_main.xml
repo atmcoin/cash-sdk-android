@@ -16,19 +16,67 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/loginButton"
-                android:text="Login"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:id="@+id/guestLoginButton"
+                android:text="Guest Login" />
 
             <androidx.appcompat.widget.AppCompatToggleButton
-                android:id="@+id/serverToggleButton"
-                android:textOff="TEST_NET"
-                android:textOn="MAIN_NET"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/serverToggleButton"
+                android:textOff="DEV"
+                android:textOn="PROD"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/userPhoneNumber"
+                android:hint="phone number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/loginButton"
+                android:text="Login" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/registerPhoneNumber"
+                android:hint="phone number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/registerName"
+                android:hint="name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/registerSurname"
+                android:hint="surname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/registerButton"
+                android:text="Register" />
+        </LinearLayout>
         <EditText
             android:id="@+id/session"
             android:text="no session"

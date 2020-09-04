@@ -22,11 +22,8 @@ class MainActivity : AppCompatActivity() {
 
         afterLoginPanel.visibility = View.GONE
 
-        loginButton.setOnClickListener {
-            val server = if (serverToggleButton.isChecked) Cash.BtcNetwork.TEST_NET
-            else Cash.BtcNetwork.MAIN_NET
-
-            CashSDK.createSession(server, object: Cash.SessionCallback {
+        guestLoginButton.setOnClickListener {
+            CashSDK.createGuestSession(getServer(), object: Cash.SessionCallback {
                 override fun onSessionCreated(sessionKey: String) {
                     session.setText(sessionKey)
                     afterLoginPanel.visibility = View.VISIBLE
@@ -35,6 +32,34 @@ class MainActivity : AppCompatActivity() {
                 override fun onError(errorMessage: String?) {
                     Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
                 }
+            })
+        }
+
+        loginButton.setOnClickListener {
+            CashSDK.login(getServer(), userPhoneNumber.text.toString(), object:Cash.SessionCallback {
+                override fun onSessionCreated(sessionKey: String) {
+                    Toast.makeText(applicationContext, sessionKey, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onError(errorMessage: String?) {
+                    Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        registerButton.setOnClickListener {
+            val server = getServer()
+            CashSDK.register(server,
+                registerPhoneNumber.text.toString(),
+                registerName.text.toString(),
+                registerSurname.text.toString(), object:Cash.RegistrationCallback {
+                    override fun onRegistered() {
+                        Toast.makeText(applicationContext, "registered", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onError(errorMessage: String?) {
+                        Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
             })
         }
 
@@ -126,5 +151,10 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    private fun getServer(): Cash.BtcNetwork {
+        return if (serverToggleButton.isChecked) Cash.BtcNetwork.MAIN_NET
+        else Cash.BtcNetwork.TEST_NET
     }
 }

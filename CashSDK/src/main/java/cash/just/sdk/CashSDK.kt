@@ -9,12 +9,20 @@ import retrofit2.Call
 object CashSDK : Cash {
     private var cashImpl : Cash = CashImpl()
 
-    override fun createSession(network: Cash.BtcNetwork, listener: Cash.SessionCallback) {
-        cashImpl.createSession(network, listener)
+    override fun createGuestSession(network: Cash.BtcNetwork, listener: Cash.SessionCallback) {
+        cashImpl.createGuestSession(network, listener)
     }
 
     override fun isSessionCreated(): Boolean {
        return cashImpl.isSessionCreated()
+    }
+
+    override fun login(network: Cash.BtcNetwork, phoneNumber: String, listener: Cash.SessionCallback) {
+        return cashImpl.login(network, phoneNumber, listener)
+    }
+
+    override fun register(network: Cash.BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.RegistrationCallback) {
+        return cashImpl.register(network, phoneNumber, firstName, lastName, listener)
     }
 
     override fun getAtmList(): Call<AtmListResponse> {

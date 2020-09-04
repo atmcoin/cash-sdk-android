@@ -1,13 +1,9 @@
 package cash.just.sdk
 
+import android.util.Log
 import cash.just.sdk.Cash.BtcNetwork
 import cash.just.sdk.Cash.BtcNetwork.MAIN_NET
-import cash.just.sdk.model.AtmListResponse
-import cash.just.sdk.model.CashCodeResponse
-import cash.just.sdk.model.CashCodeStatusResponse
-import cash.just.sdk.model.LoginResponse
-import cash.just.sdk.model.SendVerificationCodeResponse
-import cash.just.sdk.model.WacAPI
+import cash.just.sdk.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,24 +13,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class CashImpl:Cash {
     private lateinit var sessionKey:String
     private lateinit var retrofit: WacAPI
+    private lateinit var serverUrl:BtcNetwork
 
-    override fun createSession(network: BtcNetwork, listener: Cash.SessionCallback) {
-        val serverUrl = when(network) {
-            MAIN_NET -> {
-                "https://api-prd.just.cash/"
-            }
-            BtcNetwork.TEST_NET -> {
-                "https://secure.just.cash/"
-            }
-            BtcNetwork.TEST_LOCAL-> {
-                "http://127.0.0.1:8080/"
-            }
-        }
-
-        retrofit = Retrofit.Builder().baseUrl(serverUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build().create(WacAPI::class.java)
-
+    override fun createGuestSession(network: BtcNetwork, listener: Cash.SessionCallback) {
         retrofit.guestLogin().enqueue(object: Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 listener.onError(t.message)
@@ -55,8 +36,70 @@ class CashImpl:Cash {
         })
     }
 
+    private fun initRetrofit(network: BtcNetwork){
+        val serverUrl = when(network) {
+            MAIN_NET -> {
+                "https://api-prd.just.cash/"
+            }
+            BtcNetwork.TEST_NET -> {
+                "https://secure.just.cash/"
+            }
+            BtcNetwork.TEST_LOCAL-> {
+                "http://127.0.0.1:8080/"
+            }
+        }
+
+        retrofit = Retrofit.Builder().baseUrl(serverUrl)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build().create(WacAPI::class.java)
+    }
+
+    private fun initIfNeeded(network: BtcNetwork) {
+        if (!::retrofit.isInitialized) {
+            initRetrofit(network)
+        } else if(!::serverUrl.isInitialized || serverUrl != network) {
+            initRetrofit(network)
+        }
+    }
+
     override fun isSessionCreated() : Boolean {
         return this::sessionKey.isInitialized
+    }
+
+    override fun login(network: BtcNetwork, phoneNumber: String, listener: Cash.SessionCallback) {
+        initIfNeeded(network)
+
+        retrofit.login(phoneNumber).enqueue(object: Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                   Log.d("cash", response.body()?.toString())
+                } else {
+                    Log.d("cash", response.errorBody()?.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                listener.onError(t.message)
+            }
+        })
+    }
+
+    override fun register(network: BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.RegistrationCallback) {
+        initIfNeeded(network)
+
+        retrofit.register(phoneNumber, firstName, lastName).enqueue(object: Callback<RegisterResponse> {
+            override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                if (response.isSuccessful) {
+                    Log.d("cash", response.body()?.toString())
+                } else {
+                    Log.d("cash", response.errorBody()?.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                listener.onError(t.message)
+            }
+        })
     }
 
     override fun getAtmList(): Call<AtmListResponse> {

@@ -9,7 +9,6 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.apache.commons.lang3.StringUtils
 import org.junit.Assert
 import org.junit.Rule
-import org.junit.Test
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -40,7 +39,7 @@ abstract class AbstractAtmApiTest {
         var sessionKeyCreated = ""
         var error = ""
         val countDownResponse = CountDownLatch(1)
-        CashSDK.createSession(server, object : Cash.SessionCallback {
+        CashSDK.createGuestSession(server, object : Cash.SessionCallback {
             override fun onSessionCreated(sessionKey: String) {
                 sessionKeyCreated = sessionKey
                 countDownResponse.countDown()

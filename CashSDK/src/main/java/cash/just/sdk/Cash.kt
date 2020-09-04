@@ -19,8 +19,15 @@ interface Cash {
         fun onError(errorMessage:String?)
     }
 
-    fun createSession(network:BtcNetwork, listener:SessionCallback)
+    interface RegistrationCallback {
+        fun onRegistered()
+        fun onError(errorMessage:String?)
+    }
+
+    fun createGuestSession(network:BtcNetwork, listener:SessionCallback)
     fun isSessionCreated(): Boolean
+    fun login(network: BtcNetwork, phoneNumber: String, listener:SessionCallback)
+    fun register(network: BtcNetwork, phoneNumber: String, firstName:String, lastName:String, listener:RegistrationCallback)
     fun getAtmList(): Call<AtmListResponse>
     fun getAtmListByLocation(latitude:String, longitude:String): Call<AtmListResponse>
     fun checkCashCodeStatus(code:String): Call<CashCodeStatusResponse>

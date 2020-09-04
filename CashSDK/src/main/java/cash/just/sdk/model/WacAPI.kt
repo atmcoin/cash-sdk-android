@@ -10,11 +10,10 @@ interface WacAPI {
     @POST("/wac/wac/login")
     fun login(@Query(value="phone_number", encoded=true) phoneNumber:String): Call<LoginResponse>
 
-    @POST("/wac/wac/login")
+    @POST("/wac/wac/register")
     fun register(@Query(value="phone_number", encoded=true) phoneNumber:String,
                  @Query(value="first_name", encoded=true) firstName:String,
-                 @Query(value="last_name", encoded=true) lastName:String
-    ): Call<LoginResponse>
+                 @Query(value="last_name", encoded=true) lastName:String): Call<RegisterResponse>
 
     @GET("/wac/wac/atm/list")
     fun getAtmList(@Header("sessionKey") sessionKey: String): Call<AtmListResponse>
