@@ -16,6 +16,8 @@ class CashImpl:Cash {
     private lateinit var serverUrl:BtcNetwork
 
     override fun createGuestSession(network: BtcNetwork, listener: Cash.SessionCallback) {
+        initIfNeeded(network)
+
         retrofit.guestLogin().enqueue(object: Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 listener.onError(t.message)
