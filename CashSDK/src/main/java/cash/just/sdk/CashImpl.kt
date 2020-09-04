@@ -18,12 +18,12 @@ class CashImpl:Cash {
     override fun createGuestSession(network: BtcNetwork, listener: Cash.SessionCallback) {
         initIfNeeded(network)
 
-        retrofit.guestLogin().enqueue(object: Callback<LoginResponse> {
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+        retrofit.guestLogin().enqueue(object: Callback<GuestResponse> {
+            override fun onFailure(call: Call<GuestResponse>, t: Throwable) {
                 listener.onError(t.message)
             }
 
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+            override fun onResponse(call: Call<GuestResponse>, response: Response<GuestResponse>) {
                 if (response.isSuccessful) {
                     sessionKey = response.body()!!.data.sessionKey
                     listener.onSessionCreated(sessionKey)
@@ -69,33 +69,37 @@ class CashImpl:Cash {
         return this::sessionKey.isInitialized
     }
 
-    override fun login(network: BtcNetwork, phoneNumber: String, listener: Cash.SessionCallback) {
-        retrofit.login(sessionKey, phoneNumber).enqueue(object: Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+    override fun login(network: BtcNetwork, phoneNumber: String, listener: Cash.WacCallback) {
+        retrofit.login(sessionKey, phoneNumber).enqueue(object: Callback<WacBaseResponse> {
+            override fun onResponse(call: Call<WacBaseResponse>, response: Response<WacBaseResponse>) {
                 if (response.isSuccessful) {
-                   Log.d("cash", response.body()?.toString())
-                } else {
-                    Log.d("cash", response.errorBody()?.toString())
+                    if (response.body()?.result?.toLowerCase() == "ok") {
+                        listener.onSucceed()
+                    } else {
+                        listener.onError("error")
+                    }
                 }
             }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+            override fun onFailure(call: Call<WacBaseResponse>, t: Throwable) {
                 listener.onError(t.message)
             }
         })
     }
 
-    override fun register(network: BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.RegistrationCallback) {
-        retrofit.register(sessionKey, phoneNumber, firstName, lastName).enqueue(object: Callback<RegisterResponse> {
-            override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+    override fun register(network: BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.WacCallback) {
+        retrofit.register(sessionKey, phoneNumber, firstName, lastName).enqueue(object: Callback<WacBaseResponse> {
+            override fun onResponse(call: Call<WacBaseResponse>, response: Response<WacBaseResponse>) {
                 if (response.isSuccessful) {
-                    Log.d("cash", response.body()?.toString())
-                } else {
-                    Log.d("cash", response.errorBody()?.toString())
+                   if (response.body()?.result?.toLowerCase() == "ok") {
+                       listener.onSucceed()
+                   } else {
+                       listener.onError("error")
+                   }
                 }
             }
 
-            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+            override fun onFailure(call: Call<WacBaseResponse>, t: Throwable) {
                 listener.onError(t.message)
             }
         })

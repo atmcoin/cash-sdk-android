@@ -5,16 +5,16 @@ import retrofit2.http.*
 
 interface WacAPI {
     @POST("/wac/wac/guest/login")
-    fun guestLogin(): Call<LoginResponse>
+    fun guestLogin(): Call<GuestResponse>
 
     @POST("/wac/wac/login")
-    fun login(@Header("sessionKey") sessionKey: String, @Query(value="phone_number", encoded=true) phoneNumber:String): Call<LoginResponse>
+    fun login(@Header("sessionKey") sessionKey: String, @Query(value="phone_number", encoded=true) phoneNumber:String): Call<WacBaseResponse>
 
     @POST("/wac/wac/register")
     fun register(@Header("sessionKey") sessionKey: String,
                  @Query(value="phone_number", encoded=true) phoneNumber:String,
                  @Query(value="first_name", encoded=true) firstName:String,
-                 @Query(value="last_name", encoded=true) lastName:String): Call<RegisterResponse>
+                 @Query(value="last_name", encoded=true) lastName:String): Call<WacBaseResponse>
 
     @GET("/wac/wac/atm/list")
     fun getAtmList(@Header("sessionKey") sessionKey: String): Call<AtmListResponse>

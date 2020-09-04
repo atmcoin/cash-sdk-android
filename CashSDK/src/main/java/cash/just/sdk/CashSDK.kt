@@ -17,12 +17,12 @@ object CashSDK : Cash {
        return cashImpl.isSessionCreated()
     }
 
-    override fun login(network: Cash.BtcNetwork, phoneNumber: String, listener: Cash.SessionCallback) {
+    override fun login(network: Cash.BtcNetwork, phoneNumber: String, listener: Cash.WacCallback) {
         requireSession()
         return cashImpl.login(network, phoneNumber, listener)
     }
 
-    override fun register(network: Cash.BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.RegistrationCallback) {
+    override fun register(network: Cash.BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.WacCallback) {
         requireSession()
         return cashImpl.register(network, phoneNumber, firstName, lastName, listener)
     }

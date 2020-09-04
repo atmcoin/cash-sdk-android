@@ -36,9 +36,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            CashSDK.login(getServer(), userPhoneNumber.text.toString(), object:Cash.SessionCallback {
-                override fun onSessionCreated(sessionKey: String) {
-                    Toast.makeText(applicationContext, sessionKey, Toast.LENGTH_SHORT).show()
+            CashSDK.login(getServer(), userPhoneNumber.text.toString(), object: Cash.WacCallback {
+                override fun onSucceed() {
+                    Toast.makeText(applicationContext, "on succeed", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onError(errorMessage: String?) {
@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
             CashSDK.register(server,
                 registerPhoneNumber.text.toString(),
                 registerName.text.toString(),
-                registerSurname.text.toString(), object:Cash.RegistrationCallback {
-                    override fun onRegistered() {
+                registerSurname.text.toString(), object:Cash.WacCallback {
+                    override fun onSucceed() {
                         Toast.makeText(applicationContext, "registered", Toast.LENGTH_SHORT).show()
                     }
 
