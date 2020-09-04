@@ -69,9 +69,7 @@ class CashImpl:Cash {
     }
 
     override fun login(network: BtcNetwork, phoneNumber: String, listener: Cash.SessionCallback) {
-        initIfNeeded(network)
-
-        retrofit.login(phoneNumber).enqueue(object: Callback<LoginResponse> {
+        retrofit.login(sessionKey, phoneNumber).enqueue(object: Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                    Log.d("cash", response.body()?.toString())
@@ -87,9 +85,7 @@ class CashImpl:Cash {
     }
 
     override fun register(network: BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.RegistrationCallback) {
-        initIfNeeded(network)
-
-        retrofit.register(phoneNumber, firstName, lastName).enqueue(object: Callback<RegisterResponse> {
+        retrofit.register(sessionKey, phoneNumber, firstName, lastName).enqueue(object: Callback<RegisterResponse> {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 if (response.isSuccessful) {
                     Log.d("cash", response.body()?.toString())

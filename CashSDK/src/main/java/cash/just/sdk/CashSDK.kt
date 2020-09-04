@@ -18,30 +18,42 @@ object CashSDK : Cash {
     }
 
     override fun login(network: Cash.BtcNetwork, phoneNumber: String, listener: Cash.SessionCallback) {
+        requireSession()
         return cashImpl.login(network, phoneNumber, listener)
     }
 
     override fun register(network: Cash.BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.RegistrationCallback) {
+        requireSession()
         return cashImpl.register(network, phoneNumber, firstName, lastName, listener)
     }
 
     override fun getAtmList(): Call<AtmListResponse> {
+        requireSession()
         return cashImpl.getAtmList()
     }
 
     override fun getAtmListByLocation(latitude:String, longitude:String): Call<AtmListResponse> {
+        requireSession()
         return cashImpl.getAtmListByLocation(latitude, longitude)
     }
 
     override fun checkCashCodeStatus(code:String): Call<CashCodeStatusResponse> {
+        requireSession()
         return cashImpl.checkCashCodeStatus(code)
     }
 
     override fun createCashCode(atmId:String, amount:String, verificationCode:String): Call<CashCodeResponse> {
+        requireSession()
         return cashImpl.createCashCode(atmId, amount, verificationCode)
     }
 
     override fun sendVerificationCode(firstName:String, lastName:String, phoneNumber:String?, email:String?): Call<SendVerificationCodeResponse> {
+        requireSession()
         return cashImpl.sendVerificationCode(firstName, lastName, phoneNumber, email)
+    }
+
+    private fun requireSession() {
+        if (!cashImpl.isSessionCreated())
+            throw IllegalStateException("session was not created, did you call #createGuestSession()?")
     }
 }
