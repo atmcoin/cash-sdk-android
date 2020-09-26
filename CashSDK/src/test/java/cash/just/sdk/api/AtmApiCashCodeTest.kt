@@ -126,7 +126,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            post(urlPathEqualTo("/wac/pcode"))
+            post(urlPathEqualTo("/wac/wac/pcode"))
                 .withHeader("sessionKey", equalTo(SESSION_KEY))
                 .withQueryParam("atm_id", equalTo("1234"))
                 .withQueryParam("amount", equalTo("2"))
@@ -172,7 +172,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            post(urlPathEqualTo("/wac/pcode"))
+            post(urlPathEqualTo("/wac/wac/pcode"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .withQueryParam("atm_id",equalTo("1234"))
                 .withQueryParam("amount",equalTo("20"))
@@ -224,7 +224,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            get(urlPathEqualTo("/wac/pcode/111"))
+            get(urlPathEqualTo("/wac/wac/pcode/111"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .willReturn(
                     aResponse()
@@ -266,7 +266,7 @@ class AtmApiCashCodeTest() : AbstractAtmApiTest() {
         initSession()
 
         stubFor(
-            get(urlPathEqualTo("/wac/pcode/111"))
+            get(urlPathEqualTo("/wac/wac/pcode/111"))
                 .withHeader("sessionKey",equalTo(SESSION_KEY))
                 .willReturn(
                     aResponse()
