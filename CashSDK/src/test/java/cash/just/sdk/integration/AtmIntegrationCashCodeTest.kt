@@ -84,7 +84,7 @@ class AtmIntegrationCashCodeTest : AbstractAtmIntegrationTest() {
         Assert.assertFalse("isSuccessful$error", cashCodeResponse.isSuccessful)
         Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
         println("cashCodeResponse.body() : $cashCodeResponse")
-        Assert.assertEquals("Result OK", "404", cashCodeResponse.message())
+        Assert.assertEquals("Result OK", "500", cashCodeResponse.message())
 
     }
 
@@ -116,7 +116,7 @@ class AtmIntegrationCashCodeTest : AbstractAtmIntegrationTest() {
         Assert.assertFalse("isSuccessful$error", cashCodeStatusResponse.isSuccessful)
         Assert.assertTrue("Error Empty $error", StringUtils.isBlank(error))
         println("cashCodeResponse.body() : $cashCodeStatusResponse")
-        Assert.assertEquals("Result OK", "404", cashCodeStatusResponse.message())
+        Assert.assertEquals("Result OK", "500", cashCodeStatusResponse.message())
     }
 
 
