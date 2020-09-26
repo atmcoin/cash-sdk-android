@@ -25,10 +25,10 @@ interface WacAPI {
         @Path(value="lat", encoded=true) lat:String,
         @Path(value="lon", encoded=true) lon:String): Call<AtmListResponse>
 
-    @GET("/wac/pcode/{pcode}")
+    @GET("/wac/wac/pcode/{pcode}")
     fun checkCodeStatus(@Header("sessionKey") sessionKey: String, @Path(value="pcode", encoded=true) code:String): Call<CashCodeStatusResponse>
 
-    @POST("/wac/pcode")
+    @POST("/wac/wac/pcode")
     fun createCode(
         @Header("sessionKey") sessionKey: String,
         @Query(value="atm_id", encoded=true) atmId:String,
