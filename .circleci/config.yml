@@ -1,79 +1,13 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-
+# Use a package of configuration called an orb.
 orbs:
- android: circleci/android@0.2.1
-
-
-jobs:
-  build:
-    executor: android/android
-        
-    steps:
-      - checkout
-
-      # Download and cache dependencies gradle
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "CashSDK/build.gradle" }}
-            
-      #Refresh gradle
-      - run:
-          name: Refresh gradle
-          command: |
-            ./gradlew   dependencies
-
-      #gradle build
-      - run:
-          name: gradle build
-          command: |
-            ./gradlew --console=plain build
-            
-      - run:
-      #gradle jacoco
-          name: gradle jacoco
-          command: |
-            ./gradlew --console=plain jacocoTestReport
-
-      - run:
-          name: gradle jacoco badge
-          command: |
-            ./gradlew --console=plain :CashSDK:generateJacocoBadge
-
-    # SONAR
-#      - run:
-#          name:  sonar check
-#          command: |
-#            echo SonarStart
-#            if [ ! -z "$sonar_login" ]; then
-#                  ./gradlew  --console=plain --stacktrace  sonarqube  -Dsonar.organization=$sonar_organization  -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectName=cash-sdk-android -Dsonar.projectKey=atmcoin_cash-sdk-android -Dsonar.login=$sonar_login   -Dsonar.branch.name=$CIRCLE_BRANCH  -Dsonar.coverage.jacoco.xmlReportPaths=/home/circleci/project/CashSDK/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml -Dsonar.junit.reportPaths=build/test-results/testDebugUnitTest
-#            else
-#             echo Sonar Skiped
-#            fi
-#
-
-      - run:
-          name: gradle Integration Test
-          command: |
-            ./gradlew cleanTest test -PintegrationTest=true
-
-      # save cache
-      - save_cache:
-          paths:
-            - ~/.gradle
-
-          key: v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "CashSDK/build.gradle" }}
-          
-     # save tests!
-      - run:
-          name: Save test results
-          command: |
-            mkdir -p ~/atrifact
-            ls -l ./CashSDK/build
-            cp -r ./CashSDK/build/reports ~/atrifact;
-            cp -r ./CashSDK/build/test-results ~/atrifact;
-
-          when: always
-      - store_test_results:
-          path: ./CashSDK/build/test-results/testDebugUnitTest
-      - store_artifacts:
-          path: ~/atrifact
+  # Declare a dependency on the welcome-orb
+  welcome: circleci/welcome-orb@0.4.1
+# Orchestrate or schedule a set of jobs
+workflows:
+  # Name the workflow "welcome"
+  welcome:
+    # Run the welcome/run job in its own container
+    jobs:
+      - welcome/run
