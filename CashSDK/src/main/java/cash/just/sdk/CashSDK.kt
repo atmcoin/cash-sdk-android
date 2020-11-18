@@ -1,9 +1,6 @@
 package cash.just.sdk
 
-import cash.just.sdk.model.AtmListResponse
-import cash.just.sdk.model.CashCodeResponse
-import cash.just.sdk.model.CashCodeStatusResponse
-import cash.just.sdk.model.SendVerificationCodeResponse
+import cash.just.sdk.model.*
 import retrofit2.Call
 
 object CashSDK : Cash {
@@ -50,6 +47,11 @@ object CashSDK : Cash {
     override fun sendVerificationCode(firstName:String, lastName:String, phoneNumber:String?, email:String?): Call<SendVerificationCodeResponse> {
         requireSession()
         return cashImpl.sendVerificationCode(firstName, lastName, phoneNumber, email)
+    }
+
+    override fun getKycStatus(): Call<KycStatusResponse> {
+        requireSession()
+        return cashImpl.getKycStatus()
     }
 
     private fun requireSession() {

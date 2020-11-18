@@ -6,10 +6,7 @@ import android.view.View
 import android.widget.Toast
 import cash.just.sdk.Cash
 import cash.just.sdk.CashSDK
-import cash.just.sdk.model.AtmListResponse
-import cash.just.sdk.model.CashCodeResponse
-import cash.just.sdk.model.CashCodeStatusResponse
-import cash.just.sdk.model.SendVerificationCodeResponse
+import cash.just.sdk.model.*
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Response
@@ -43,6 +40,18 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onError(errorMessage: String?) {
                     Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        kycButton.setOnClickListener {
+            CashSDK.getKycStatus().enqueue(object: retrofit2.Callback<KycStatusResponse> {
+                override fun onResponse(call: Call<KycStatusResponse>, response: Response<KycStatusResponse>) {
+                    Toast.makeText(applicationContext, response.toString(), Toast.LENGTH_LONG).show()
+                }
+
+                override fun onFailure(call: Call<KycStatusResponse>, t: Throwable) {
+
                 }
             })
         }

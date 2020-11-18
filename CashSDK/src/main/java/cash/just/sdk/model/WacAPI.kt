@@ -43,4 +43,7 @@ interface WacAPI {
         @Query(value="phone_number", encoded=true) phoneNumber:String?,
         @Query(value="email", encoded=true) email:String?
     ): Call<SendVerificationCodeResponse>
+
+    @GET("/wac/wac/kyc/status")
+    fun getKycStatus(@Header("sessionKey") sessionKey: String): Call<KycStatusResponse>
 }

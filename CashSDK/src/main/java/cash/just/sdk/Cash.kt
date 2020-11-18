@@ -1,9 +1,6 @@
 package cash.just.sdk
 
-import cash.just.sdk.model.AtmListResponse
-import cash.just.sdk.model.CashCodeResponse
-import cash.just.sdk.model.CashCodeStatusResponse
-import cash.just.sdk.model.SendVerificationCodeResponse
+import cash.just.sdk.model.*
 import retrofit2.Call
 
 interface Cash {
@@ -33,4 +30,5 @@ interface Cash {
     fun checkCashCodeStatus(code:String): Call<CashCodeStatusResponse>
     fun createCashCode(atmId:String, amount:String, verificationCode:String): Call<CashCodeResponse>
     fun sendVerificationCode(firstName:String, lastName:String, phoneNumber:String?, email:String?): Call<SendVerificationCodeResponse>
+    fun getKycStatus(): Call<KycStatusResponse>
 }

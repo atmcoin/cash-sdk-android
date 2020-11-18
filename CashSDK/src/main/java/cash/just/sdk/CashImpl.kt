@@ -1,9 +1,10 @@
 package cash.just.sdk
 
-import android.util.Log
 import cash.just.sdk.Cash.BtcNetwork
 import cash.just.sdk.Cash.BtcNetwork.MAIN_NET
 import cash.just.sdk.model.*
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,8 +53,12 @@ class CashImpl:Cash {
             }
         }
 
+        val moshi = Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
+
         retrofit = Retrofit.Builder().baseUrl(serverUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build().create(WacAPI::class.java)
     }
 
@@ -128,5 +133,9 @@ class CashImpl:Cash {
         email: String?
     ): Call<SendVerificationCodeResponse> {
         return retrofit.sendVerificationCode(sessionKey, firstName, lastName, phoneNumber, email)
+    }
+
+    override  fun getKycStatus(): Call<KycStatusResponse> {
+        return retrofit.getKycStatus(sessionKey)
     }
 }
