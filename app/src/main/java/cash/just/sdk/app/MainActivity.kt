@@ -10,6 +10,7 @@ import cash.just.sdk.model.*
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Response
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,7 +48,16 @@ class MainActivity : AppCompatActivity() {
         kycButton.setOnClickListener {
             CashSDK.getKycStatus().enqueue(object: retrofit2.Callback<KycStatusResponse> {
                 override fun onResponse(call: Call<KycStatusResponse>, response: Response<KycStatusResponse>) {
-                    Toast.makeText(applicationContext, response.toString(), Toast.LENGTH_LONG).show()
+                    if (response.code() == 200) {
+                        Toast.makeText(applicationContext, response.toString(), Toast.LENGTH_LONG).show()
+                    } else {
+                        response.errorBody()?.let {
+                            val error = it.parseError()
+                            Toast.makeText(applicationContext, "Request with error: ${error.error.code}", Toast.LENGTH_LONG).show()
+                        } ?:run {
+                            Timber.e("http code is not 200 and it has no errorBody")
+                        }
+                    }
                 }
 
                 override fun onFailure(call: Call<KycStatusResponse>, t: Throwable) {
