@@ -1,5 +1,6 @@
 package cash.just.sdk
 
+import android.widget.Toast
 import cash.just.sdk.Cash.BtcNetwork
 import cash.just.sdk.Cash.BtcNetwork.MAIN_NET
 import cash.just.sdk.model.*
@@ -10,6 +11,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import timber.log.Timber
 
 class CashImpl:Cash {
     private lateinit var sessionKey:String
@@ -82,6 +84,31 @@ class CashImpl:Cash {
                         listener.onSucceed()
                     } else {
                         listener.onError("error")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<WacBaseResponse>, t: Throwable) {
+                listener.onError(t.message)
+            }
+        })
+    }
+
+    override fun loginConfirm(confirmNumber: String, listener: Cash.WacCallback) {
+        retrofit.loginConfirmation(sessionKey, confirmNumber).enqueue(object: Callback<WacBaseResponse> {
+            override fun onResponse(call: Call<WacBaseResponse>, response: Response<WacBaseResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()?.result?.toLowerCase() == "ok") {
+                        listener.onSucceed()
+                    } else {
+                        listener.onError("error")
+                    }
+                } else {
+                    response.errorBody()?.let {
+                        val error = it.parseError()
+                        listener.onError("Request with error: ${error.error.code}")
+                    } ?:run {
+                        Timber.e("http code is not 200 and it has no errorBody")
                     }
                 }
             }

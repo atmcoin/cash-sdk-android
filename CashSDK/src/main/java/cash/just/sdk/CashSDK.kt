@@ -54,6 +54,11 @@ object CashSDK : Cash {
         return cashImpl.getKycStatus()
     }
 
+    override fun loginConfirm(confirmNumber: String, listener: Cash.WacCallback) {
+        requireSession()
+        return cashImpl.loginConfirm(confirmNumber, listener)
+    }
+
     private fun requireSession() {
         if (!cashImpl.isSessionCreated())
             throw IllegalStateException("session was not created, did you call #createGuestSession()?")

@@ -27,65 +27,19 @@
                 android:id="@+id/serverToggleButton"
                 android:textOff="DEV"
                 android:textOn="PROD"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/userPhoneNumber"
-                android:hint="phone number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/loginButton"
-                    android:text="Login" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/kycButton"
-                    android:text="Kyc Status" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/registerPhoneNumber"
-                android:hint="phone number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:id="@+id/registerName"
-                android:hint="name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:id="@+id/registerSurname"
-                android:hint="surname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/registerButton"
-                android:text="Register" />
+                android:id="@+id/advancedLogin"
+                android:text="Advanced Auth"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/session"
             android:text="no session"
@@ -98,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <LinearLayout
+            <LinearLayout
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -129,13 +83,13 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <EditText
-            android:lines="10"
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:lines="10"
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <LinearLayout
+            <LinearLayout
             android:layout_marginTop="15dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -171,7 +125,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
             android:layout_marginTop="15dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -233,5 +187,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 </ScrollView>

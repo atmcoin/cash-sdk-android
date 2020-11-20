@@ -10,6 +10,9 @@ interface WacAPI {
     @POST("/wac/wac/login")
     fun login(@Header("sessionKey") sessionKey: String, @Query(value="phone_number", encoded=true) phoneNumber:String): Call<WacBaseResponse>
 
+    @POST("/wac/wac/login/confirm")
+    fun loginConfirmation(@Header("sessionKey") sessionKey: String, @Query(value="verification_code", encoded=true) verificationCode:String): Call<WacBaseResponse>
+
     @POST("/wac/wac/register")
     fun register(@Header("sessionKey") sessionKey: String,
                  @Query(value="phone_number", encoded=true) phoneNumber:String,
@@ -43,6 +46,7 @@ interface WacAPI {
         @Query(value="phone_number", encoded=true) phoneNumber:String?,
         @Query(value="email", encoded=true) email:String?
     ): Call<SendVerificationCodeResponse>
+
 
     @GET("/wac/wac/kyc/status")
     fun getKycStatus(@Header("sessionKey") sessionKey: String): Call<KycStatusResponse>
