@@ -35,4 +35,3 @@ data class CashCode(
     @field:Json(name = "usd_amount") val usdAmount: String,
     @field:Json(name = "btc_amount") val btc_amount: String,
     @field:Json(name = "btc_whole_unit_price") val unitPrice: String)
-
