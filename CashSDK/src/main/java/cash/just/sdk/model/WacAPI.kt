@@ -1,6 +1,7 @@
 package cash.just.sdk.model
 
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface WacAPI {
@@ -8,7 +9,7 @@ interface WacAPI {
     fun guestLogin(): Call<GuestResponse>
 
     @POST("/wac/wac/login")
-    fun login(@Header("sessionKey") sessionKey: String, @Query(value="phone_number", encoded=true) phoneNumber:String): Call<WacBaseResponse>
+    suspend fun login(@Header("sessionKey") sessionKey: String, @Query(value="phone_number", encoded=true) phoneNumber:String): Response<WacBaseResponse>
 
     @POST("/wac/wac/login/confirm")
     fun loginConfirmation(@Header("sessionKey") sessionKey: String, @Query(value="verification_code", encoded=true) verificationCode:String): Call<WacBaseResponse>

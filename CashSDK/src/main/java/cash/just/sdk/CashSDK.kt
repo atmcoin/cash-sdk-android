@@ -2,6 +2,7 @@ package cash.just.sdk
 
 import cash.just.sdk.model.*
 import retrofit2.Call
+import retrofit2.Response
 
 object CashSDK : Cash {
     private var cashImpl : Cash = CashImpl()
@@ -11,12 +12,12 @@ object CashSDK : Cash {
     }
 
     override fun isSessionCreated(): Boolean {
-       return cashImpl.isSessionCreated()
+        return cashImpl.isSessionCreated()
     }
 
-    override fun login(network: Cash.BtcNetwork, phoneNumber: String, listener: Cash.WacCallback) {
+    override suspend fun login(network: Cash.BtcNetwork, phoneNumber: String): Response<WacBaseResponse> {
         requireSession()
-        return cashImpl.login(network, phoneNumber, listener)
+        return cashImpl.login(network, phoneNumber)
     }
 
     override fun register(network: Cash.BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.WacCallback) {

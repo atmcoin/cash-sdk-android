@@ -2,6 +2,7 @@ package cash.just.sdk
 
 import cash.just.sdk.model.*
 import retrofit2.Call
+import retrofit2.Response
 
 interface Cash {
 
@@ -23,7 +24,7 @@ interface Cash {
 
     fun createGuestSession(network:BtcNetwork, listener:SessionCallback)
     fun isSessionCreated(): Boolean
-    fun login(network: BtcNetwork, phoneNumber: String, listener:WacCallback)
+    suspend fun login(network: BtcNetwork, phoneNumber: String): Response<WacBaseResponse>
     fun register(network: BtcNetwork, phoneNumber: String, firstName:String, lastName:String, listener:WacCallback)
     fun getAtmList(): Call<AtmListResponse>
     fun getAtmListByLocation(latitude:String, longitude:String): Call<AtmListResponse>

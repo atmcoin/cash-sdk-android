@@ -7,6 +7,11 @@ import cash.just.sdk.Cash
 import cash.just.sdk.CashSDK
 import cash.just.sdk.model.*
 import kotlinx.android.synthetic.main.activity_auth.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
@@ -17,16 +22,18 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
-        loginButton.setOnClickListener {
-            CashSDK.login(getServer(), userPhoneNumber.text.toString(), object: Cash.WacCallback {
-                override fun onSucceed() {
-                    Toast.makeText(applicationContext, "on succeed", Toast.LENGTH_SHORT).show()
-                }
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
 
-                override fun onError(errorMessage: String?) {
-                    Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+        loginButton.setOnClickListener {
+            scope.launch {
+                val response = CashSDK.login(getServer(),userPhoneNumber.text.toString())
+                if(response.isSuccessful){
+                    Toast.makeText(applicationContext, "on succeed", Toast.LENGTH_SHORT).show()
+                }else{
+
+                    Toast.makeText(applicationContext, response.errorBody().toString(), Toast.LENGTH_SHORT).show()
                 }
-            })
+            }
         }
 
         confirmButton.setOnClickListener {

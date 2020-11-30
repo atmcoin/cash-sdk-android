@@ -1,6 +1,5 @@
 package cash.just.sdk
 
-import android.widget.Toast
 import cash.just.sdk.Cash.BtcNetwork
 import cash.just.sdk.Cash.BtcNetwork.MAIN_NET
 import cash.just.sdk.model.*
@@ -76,23 +75,7 @@ class CashImpl:Cash {
         return this::sessionKey.isInitialized
     }
 
-    override fun login(network: BtcNetwork, phoneNumber: String, listener: Cash.WacCallback) {
-        retrofit.login(sessionKey, phoneNumber).enqueue(object: Callback<WacBaseResponse> {
-            override fun onResponse(call: Call<WacBaseResponse>, response: Response<WacBaseResponse>) {
-                if (response.isSuccessful) {
-                    if (response.body()?.result?.toLowerCase() == "ok") {
-                        listener.onSucceed()
-                    } else {
-                        listener.onError("error")
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<WacBaseResponse>, t: Throwable) {
-                listener.onError(t.message)
-            }
-        })
-    }
+    override suspend fun login(network: BtcNetwork, phoneNumber: String)  = retrofit.login(sessionKey,phoneNumber)
 
     override fun loginConfirm(confirmNumber: String, listener: Cash.WacCallback) {
         retrofit.loginConfirmation(sessionKey, confirmNumber).enqueue(object: Callback<WacBaseResponse> {
@@ -123,11 +106,11 @@ class CashImpl:Cash {
         retrofit.register(sessionKey, phoneNumber, firstName, lastName).enqueue(object: Callback<WacBaseResponse> {
             override fun onResponse(call: Call<WacBaseResponse>, response: Response<WacBaseResponse>) {
                 if (response.isSuccessful) {
-                   if (response.body()?.result?.toLowerCase() == "ok") {
-                       listener.onSucceed()
-                   } else {
-                       listener.onError("error")
-                   }
+                    if (response.body()?.result?.toLowerCase() == "ok") {
+                        listener.onSucceed()
+                    } else {
+                        listener.onError("error")
+                    }
                 }
             }
 
