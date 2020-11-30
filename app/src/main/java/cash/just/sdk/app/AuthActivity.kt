@@ -28,9 +28,10 @@ class AuthActivity : AppCompatActivity() {
             scope.launch {
                 val response = CashSDK.login(getServer(),userPhoneNumber.text.toString())
                 if(response.isSuccessful){
-                    Toast.makeText(applicationContext, "on succeed", Toast.LENGTH_SHORT).show()
+                    if (response.body()?.result?.toLowerCase() == "ok") {
+                        Toast.makeText(applicationContext, "on succeed", Toast.LENGTH_SHORT).show()
+                    }
                 }else{
-
                     Toast.makeText(applicationContext, response.errorBody().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
