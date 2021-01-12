@@ -3,10 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-if (file("gradle-mvn-push.gradle").exists()) {
-    apply from: rootProject.file('gradle-mvn-push.gradle')
-}
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
