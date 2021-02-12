@@ -1,0 +1,87 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+// update these next lines to fit your submodule
+group = 'cash.just.sdk'
+version = '1.0'
+
+// Add sources as an artifact
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "source"
+}
+
+// Loop over all variants
+android.libraryVariants.all { variant ->
+    variant.outputs.all { output ->
+        // This creates a publication for each variant
+        publishing.publications.create(variant.name, MavenPublication) {
+            // The sources artifact from earlier
+            artifact sourceJar
+
+            // Variant dependent artifact, e.g. release, debug
+            artifact source: output.outputFile, classifier: output.name
+
+            // Go through all the dependencies for each variant and add them to the POM
+            // file as dependencies
+            pom.withXml {
+                def dependencies = asNode().appendNode('dependencies')
+
+                // Filter out anything that's not an external dependency. You shouldn't
+                // be publishing artifacts that depend on local (e.g. project) dependencies,
+                // but who knows...
+                configurations.getByName(variant.name + "CompileClasspath").allDependencies
+                        .findAll { it instanceof ExternalDependency }
+                        .each {
+                            def dependency = dependencies.appendNode('dependency')
+
+                            dependency.appendNode('groupId', it.group)
+                            dependency.appendNode('artifactId', it.name)
+                            dependency.appendNode('version', it.version)
+                        }
+            }
+        }
+    }
+}
+
+// Ensure that the publish task depends on assembly
+tasks.all { task ->
+    if (task instanceof AbstractPublishToMaven) {
+        task.dependsOn assemble
+    }
+}
+
+// Configure the destination repository with
+// S3 URL and access credentials
+publishing {
+    repositories {
+        maven {
+            //aws bucket link
+            url "s3://just-cash-artifactory.s3.amazonaws.com"
+            //aws credentials
+            credentials(AwsCredentials) {
+                accessKey "AKIAX47JG2YCSV26GJ5G"
+                secretKey "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"
+            }
+        }
+    }
+}
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = '1.4.10'
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jacoco:org.jacoco.core:$jacocoVersion"
+        classpath "com.github.dawnwords:jacoco-badge-gradle-plugin:0.2.0"
+    }
+}

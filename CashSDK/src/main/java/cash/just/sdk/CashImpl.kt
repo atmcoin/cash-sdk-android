@@ -159,7 +159,7 @@ class CashImpl:Cash {
         phoneNumber: String?,
         email: String?
     ): Call<SendVerificationCodeResponse> {
-        return retrofit.sendVerificationCode(sessionKey, firstName, lastName, phoneNumber, email)
+        return retrofit.sendVerificationCode(sessionKey, firstName, lastName, phoneNumber, email, "1")
     }
 
     override  fun getKycStatus(): Call<KycStatusResponse> {

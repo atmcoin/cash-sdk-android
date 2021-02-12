@@ -44,8 +44,10 @@ interface WacAPI {
         @Query(value="first_name", encoded=true) firstName:String,
         @Query(value="last_name", encoded=true) lastName:String,
         @Query(value="phone_number", encoded=true) phoneNumber:String?,
-        @Query(value="email", encoded=true) email:String?
-    ): Call<SendVerificationCodeResponse>
+        @Query(value="email", encoded=true) email:String?,
+        @Query(value="word_code", encoded=true) wordCode:String?,
+
+        ): Call<SendVerificationCodeResponse>
 
 
     @GET("/wac/wac/kyc/status")
