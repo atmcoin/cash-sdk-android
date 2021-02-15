@@ -61,7 +61,7 @@ publishing {
             //aws credentials
             credentials(AwsCredentials) {
                 accessKey "AKIAX47JG2YCSV26GJ5G"
-                secretKey "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"
+                secretKey ""
             }
         }
     }
