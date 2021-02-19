@@ -57,7 +57,7 @@ publishing {
     repositories {
         maven {
             //aws bucket link
-            url "s3://just-cash-artifactory.s3.amazonaws.com"
+                url "s3://just-cash-artifactory.s3.amazonaws.com"
             //aws credentials
             credentials(AwsCredentials) {
                 accessKey "AKIAX47JG2YCSV26GJ5G"
