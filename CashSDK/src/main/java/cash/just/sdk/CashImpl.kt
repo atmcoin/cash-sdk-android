@@ -1,6 +1,5 @@
 package cash.just.sdk
 
-import android.widget.Toast
 import cash.just.sdk.Cash.BtcNetwork
 import cash.just.sdk.Cash.BtcNetwork.MAIN_NET
 import cash.just.sdk.model.*
@@ -117,6 +116,10 @@ class CashImpl:Cash {
                 listener.onError(t.message)
             }
         })
+    }
+
+    override fun getSession() : String? {
+       return sessionKey
     }
 
     override fun register(network: BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.WacCallback) {
