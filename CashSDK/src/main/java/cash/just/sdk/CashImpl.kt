@@ -118,7 +118,7 @@ class CashImpl:Cash {
         })
     }
 
-    override fun getSession() : String? {
+    override fun getSession() : String {
        return sessionKey
     }
 
