@@ -3,8 +3,7 @@ package cash.just.sdk
 import android.content.Context
 import android.content.SharedPreferences
 
-class AuthSharedPreferenceManager {
-    companion object {
+object AuthSharedPreferenceManager {
         private const val APP_SETTINGS = "APP_AUTH_PREFERENCES"
         private const val PHONE = "PHONE"
         private const val SESSION_KEY = "SESSION_KEY"
@@ -28,5 +27,4 @@ class AuthSharedPreferenceManager {
         fun setSession(context: Context, phone: String) {
             getSharedPreferences(context).edit().putString(SESSION_KEY, phone).apply()
         }
-    }
 }
