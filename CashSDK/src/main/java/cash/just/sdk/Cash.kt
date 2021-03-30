@@ -31,7 +31,6 @@ interface Cash {
     fun checkCashCodeStatus(code:String): Call<CashCodeStatusResponse>
     fun createCashCode(atmId:String, amount:String, verificationCode:String): Call<CashCodeResponse>
     fun sendVerificationCode(firstName:String, lastName:String, phoneNumber:String?, email:String?): Call<SendVerificationCodeResponse>
-    fun loginConfirm(confirmNumber: String, listener: Cash.WacCallback)
     fun getUserState(refresh: Boolean): UserState
     fun getKycDocTypes(): Call<KycDocTypeResponse>
     fun getKycPersonalInformation() : Call<KycPiResponse>
