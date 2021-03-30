@@ -52,4 +52,19 @@ interface WacAPI {
 
     @GET("/wac/wac/kyc/status")
     fun getKycStatus(@Header("sessionKey") sessionKey: String): Call<KycStatusResponse>
+
+    @GET("/wac/wac/kyc/types")
+    fun getKycDocTypes(@Header("sessionKey") sessionKey: String): Call<KycDocTypeResponse>
+
+    @GET("/wac/wac/kyc/documents")
+    fun getKycDocuments(@Header("sessionKey") sessionKey: String): Call<KycDocumentResponse>
+
+    @GET("/wac/wac/kyc/pi")
+    fun getKycPersonalInformation(@Header("sessionKey") sessionKey: String): Call<KycPiResponse>
+
+    @POST("/wac/wac/kyc/pi")
+    fun updatePersonalInformation(
+        @Header("sessionKey") sessionKey: String,
+        @Query(value="ssn", encoded=true) ssn:String?,
+        ): Call<WacBaseResponse>
 }
