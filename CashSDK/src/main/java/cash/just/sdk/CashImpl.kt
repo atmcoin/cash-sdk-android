@@ -120,6 +120,10 @@ class CashImpl:Cash {
         })
     }
 
+    override fun getSession() : String {
+       return sessionKey
+    }
+
     override fun register(network: BtcNetwork, phoneNumber: String, firstName: String, lastName: String, listener: Cash.WacCallback) {
         retrofit.register(sessionKey, phoneNumber, firstName, lastName).enqueue(object: Callback<WacBaseResponse> {
             override fun onResponse(call: Call<WacBaseResponse>, response: Response<WacBaseResponse>) {

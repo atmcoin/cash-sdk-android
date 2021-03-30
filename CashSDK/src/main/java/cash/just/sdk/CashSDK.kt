@@ -56,6 +56,11 @@ object CashSDK : Cash {
         return cashImpl.loginConfirm(confirmNumber, listener)
     }
 
+    override fun getSession(): String? {
+        requireSession()
+        return cashImpl.getSession()
+    }
+
     private fun requireSession() {
         if (!cashImpl.isSessionCreated())
             throw IllegalStateException("session was not created, did you call #createGuestSession()?")
