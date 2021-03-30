@@ -2,9 +2,11 @@ package cash.just.sdk
 
 import cash.just.sdk.model.*
 import retrofit2.Call
+import retrofit2.Response
 
 object CashSDK : Cash {
     private var cashImpl : Cash = CashImpl()
+
 
     override fun createGuestSession(network: Cash.BtcNetwork, listener: Cash.SessionCallback) {
         cashImpl.createGuestSession(network, listener)
@@ -49,11 +51,6 @@ object CashSDK : Cash {
         return cashImpl.sendVerificationCode(firstName, lastName, phoneNumber, email)
     }
 
-    override fun getKycStatus(): Call<KycStatusResponse> {
-        requireSession()
-        return cashImpl.getKycStatus()
-    }
-
     override fun loginConfirm(confirmNumber: String, listener: Cash.WacCallback) {
         requireSession()
         return cashImpl.loginConfirm(confirmNumber, listener)
@@ -67,5 +64,28 @@ object CashSDK : Cash {
     private fun requireSession() {
         if (!cashImpl.isSessionCreated())
             throw IllegalStateException("session was not created, did you call #createGuestSession()?")
+    }
+
+    override fun getUserState(refresh: Boolean): UserState {
+        return cashImpl.getUserState(refresh)
+    }
+
+    override fun getKycDocTypes(): Call<KycDocTypeResponse> {
+        requireSession()
+        return cashImpl.getKycDocTypes()
+    }
+
+    override fun getKycPersonalInformation(): Call<KycPiResponse> {
+        requireSession()
+        return cashImpl.getKycPersonalInformation()
+    }
+
+    override fun getKycDocuments(): Call<KycDocumentResponse> {
+        requireSession()
+        return cashImpl.getKycDocuments()
+    }
+
+    override fun getSession(): String? {
+        return cashImpl.getSession()
     }
 }
