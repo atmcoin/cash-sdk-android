@@ -85,7 +85,10 @@ object CashSDK : Cash {
         return cashImpl.getKycDocuments()
     }
 
-    override fun getSession(): String? {
-        return cashImpl.getSession()
+    override fun getKycStatus(): UserState? {
+        requireSession()
+        return cashImpl.getKycStatus()
     }
+
+
 }
