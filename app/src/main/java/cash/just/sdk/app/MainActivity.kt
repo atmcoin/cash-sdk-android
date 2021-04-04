@@ -11,6 +11,7 @@ import cash.just.sdk.model.AtmListResponse
 import cash.just.sdk.model.CashCodeResponse
 import cash.just.sdk.model.CashCodeStatusResponse
 import cash.just.sdk.model.SendVerificationCodeResponse
+import cash.just.sdk.utils.DriverLicenseUtil
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.activity_main.*
@@ -167,7 +168,8 @@ class MainActivity : AppCompatActivity() {
                     val resultMaps: HashMap<String, String>? = DriverLicenseUtil.readDriverLicense(result.contents)
                     driverDetails.visibility =View.VISIBLE
                     driverDetails.text =
-                        "Driver Name: ${resultMaps?.get(DriverLicenseUtil.FIRST_NAME)} ${resultMaps?.get(DriverLicenseUtil.LAST_NAME)} " +
+                        "Driver Name: ${resultMaps?.get(DriverLicenseUtil.FIRST_NAME)} ${resultMaps?.get(
+                            DriverLicenseUtil.LAST_NAME)} " +
                                 "\nLicense Number: ${resultMaps?.get(DriverLicenseUtil.LICENSE_NUMBER)} " +
                                 "\nAddress: ${resultMaps?.get(DriverLicenseUtil.STREET)}"
                 }

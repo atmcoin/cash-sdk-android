@@ -1,4 +1,4 @@
-package cash.just.sdk.app
+package cash.just.sdk.utils
 
 class DriverLicenseUtil {
     companion object {
