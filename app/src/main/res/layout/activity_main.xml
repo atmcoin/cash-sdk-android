@@ -83,6 +83,20 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+            <Button
+                android:layout_gravity="start"
+                android:id="@+id/scanQrCode"
+                android:text="Scan QR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:lines="4"
+                android:id="@+id/driverDetails"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <EditText
                 android:lines="10"
                 android:id="@+id/list"
