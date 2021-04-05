@@ -1,5 +1,6 @@
 package cash.just.sdk.app
 
+import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -42,9 +43,12 @@ class AuthActivity : AppCompatActivity() {
         }
 
         kycButton.setOnClickListener {
-            val state:UserState? = CashSDK.getKycStatus()
-            Toast.makeText(applicationContext, state?.name, Toast.LENGTH_LONG).show()
-
+            AsyncTask.execute {
+                val state:UserState? = CashSDK.getKycStatus()
+                runOnUiThread {
+                    Toast.makeText(applicationContext, state?.name, Toast.LENGTH_LONG).show()
+                }
+            }
         }
 
         registerButton.setOnClickListener {

@@ -179,19 +179,22 @@ class CashImpl:Cash {
                 call: Call<KycStatusResponse>,
                 response: Response<KycStatusResponse>
             ) {
-                if(response.isSuccessful) {
-                    state = when (response.body()?.data?.items!![0].status) {
-                       KycStatus.NEW -> {
-                            UserState.KYC_NOT_VERIFIED
+                state =
+                    if (response.isSuccessful) {
+                        when (response.body()?.data?.items!![0].status) {
+                            KycStatus.NEW -> {
+                                UserState.KYC_NOT_VERIFIED
+                            }
+                            KycStatus.DOCS_VERIFIED -> {
+                                UserState.KYC_VERIFIED
+                            }
+                            KycStatus.REJECTED -> {
+                                UserState.NOT_VALID
+                            }
                         }
-                        KycStatus.DOCS_VERIFIED -> {
-                            UserState.KYC_VERIFIED
-                        }
-                        KycStatus.REJECTED -> {
-                            UserState.NOT_VALID
-                        }
+                    } else {
+                        UserState.GUEST
                     }
-                }
                 latch.countDown()
             }
 
