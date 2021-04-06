@@ -42,9 +42,6 @@ dependencies {
     implementation project(':CashSDK')
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    //qr scanner
-    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
-
 //    implementation('com.github.atmcoin:cash-sdk-android:1.9.2:debug@aar'){
 //        transitive = true
 //    }
