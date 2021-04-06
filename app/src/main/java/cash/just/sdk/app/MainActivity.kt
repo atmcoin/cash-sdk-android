@@ -11,9 +11,6 @@ import cash.just.sdk.model.AtmListResponse
 import cash.just.sdk.model.CashCodeResponse
 import cash.just.sdk.model.CashCodeStatusResponse
 import cash.just.sdk.model.SendVerificationCodeResponse
-import cash.just.sdk.utils.DriverLicenseUtil
-import com.google.zxing.integration.android.IntentIntegrator
-import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Response
@@ -140,41 +137,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             })
-        }
-
-        scanQrCode.setOnClickListener {
-            val integrator = IntentIntegrator(this)
-
-            integrator.setOrientationLocked(false)
-            integrator.setPrompt("Scan QR code")
-            integrator.setBeepEnabled(false) //Use this to set whether you need a beep sound when the QR code is scanned
-
-
-            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE, IntentIntegrator.PDF_417)
-
-
-            integrator.initiateScan()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val result: IntentResult? = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents == null) {
-                Toast.makeText(applicationContext, "Cancelled", Toast.LENGTH_LONG).show()
-            } else {
-                if(result.formatName == IntentIntegrator.PDF_417) {
-                    val resultMaps: HashMap<String, String>? = DriverLicenseUtil.readDriverLicense(result.contents)
-                    driverDetails.visibility =View.VISIBLE
-                    driverDetails.text =
-                        "Driver Name: ${resultMaps?.get(DriverLicenseUtil.FIRST_NAME)} ${resultMaps?.get(
-                            DriverLicenseUtil.LAST_NAME)} " +
-                                "\nLicense Number: ${resultMaps?.get(DriverLicenseUtil.LICENSE_NUMBER)} " +
-                                "\nAddress: ${resultMaps?.get(DriverLicenseUtil.STREET)}"
-                }
-                println(result.contents)
-            }
         }
     }
 }
