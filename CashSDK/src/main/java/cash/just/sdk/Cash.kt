@@ -1,6 +1,7 @@
 package cash.just.sdk
 
 import cash.just.sdk.model.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 
 interface Cash {
@@ -34,7 +35,8 @@ interface Cash {
     fun getKycDocTypes(): Call<KycDocTypeResponse>
     fun getKycPersonalInformation() : Call<KycPiResponse>
     fun getKycDocuments() : Call<KycDocumentResponse>
-    fun getKycStatus(): UserState?
+    fun getKycStatus(): Call<KycStatusResponse>
     fun loginConfirm(confirmNumber: String, listener: WacCallback)
     fun getSession() : String?
+    fun uploadKycDocs(docType: KycDocType, filePart: MultipartBody.Part) : Call<WacBaseResponse>
 }
