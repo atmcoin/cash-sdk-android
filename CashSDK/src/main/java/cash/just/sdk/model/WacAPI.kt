@@ -1,5 +1,6 @@
 package cash.just.sdk.model
 
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -66,5 +67,13 @@ interface WacAPI {
     fun updatePersonalInformation(
         @Header("sessionKey") sessionKey: String,
         @Query(value="ssn", encoded=true) ssn:String?,
-        ): Call<WacBaseResponse>
+    ): Call<WacBaseResponse>
+
+    @Multipart
+    @POST("/wac/wac/kyc/upload")
+    fun uploadKycDoc(
+        @Header("sessionKey") sessionKey: String,
+        @Query(value="type", encoded=true) type: KycDocType,
+        @Part file: MultipartBody.Part,
+    ): Call<WacBaseResponse>
 }

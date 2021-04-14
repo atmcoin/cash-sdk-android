@@ -6,6 +6,7 @@ import cash.just.sdk.Cash.BtcNetwork.MAIN_NET
 import cash.just.sdk.model.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.MultipartBody
 import retrofit2.*
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
@@ -124,11 +125,11 @@ class CashImpl:Cash {
         retrofit.register(sessionKey, phoneNumber, firstName, lastName).enqueue(object: Callback<WacBaseResponse> {
             override fun onResponse(call: Call<WacBaseResponse>, response: Response<WacBaseResponse>) {
                 if (response.isSuccessful) {
-                   if (response.body()?.result?.toLowerCase() == "ok") {
-                       listener.onSucceed()
-                   } else {
-                       listener.onError("error")
-                   }
+                    if (response.body()?.result?.toLowerCase() == "ok") {
+                        listener.onSucceed()
+                    } else {
+                        listener.onError("error")
+                    }
                 }
             }
 
@@ -167,49 +168,14 @@ class CashImpl:Cash {
         return sessionKey
     }
 
-    override fun getKycStatus(): UserState? {
-        val latch = CountDownLatch(1)
-        var state: UserState? = null
-        retrofit.getKycStatus(sessionKey).enqueue(object: Callback<KycStatusResponse> {
-            override fun onFailure(call: Call<KycStatusResponse>, t: Throwable) {
-                latch.countDown()
-            }
-
-            override fun onResponse(
-                call: Call<KycStatusResponse>,
-                response: Response<KycStatusResponse>
-            ) {
-                state =
-                    if (response.isSuccessful) {
-                        when (response.body()?.data?.items!![0].status) {
-                            KycStatus.NEW -> {
-                                UserState.KYC_NOT_VERIFIED
-                            }
-                            KycStatus.DOCS_VERIFIED -> {
-                                UserState.KYC_VERIFIED
-                            }
-                            KycStatus.REJECTED -> {
-                                UserState.NOT_VALID
-                            }
-                        }
-                    } else {
-                        UserState.GUEST
-                    }
-                latch.countDown()
-            }
-
-        })
-        latch.await()
-        return state
+    override fun getKycStatus(): Call<KycStatusResponse> {
+        return retrofit.getKycStatus(sessionKey)
     }
 
     override fun getUserState(refresh: Boolean): UserState {
         if (refresh) {
             if (Looper.getMainLooper().thread == Thread.currentThread()) {
                 throw IllegalStateException("You must refresh the userState in a background thread") //Current Thread is Main Thread.
-            }
-            getKycStatus()?.let {
-                _userState = it
             }
         }
         return _userState
@@ -225,5 +191,12 @@ class CashImpl:Cash {
 
     override fun getKycDocuments(): Call<KycDocumentResponse> {
         return retrofit.getKycDocuments(sessionKey)
+    }
+
+    override fun uploadKycDocs(
+        docType: KycDocType,
+        filePart: MultipartBody.Part
+    ): Call<WacBaseResponse> {
+        return retrofit.uploadKycDoc(sessionKey, docType, filePart)
     }
 }

@@ -9,6 +9,7 @@ import cash.just.sdk.CashSDK
 import cash.just.sdk.model.*
 import kotlinx.android.synthetic.main.activity_auth.*
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 
@@ -43,12 +44,16 @@ class AuthActivity : AppCompatActivity() {
         }
 
         kycButton.setOnClickListener {
-            AsyncTask.execute {
-                val state:UserState? = CashSDK.getKycStatus()
-                runOnUiThread {
-                    Toast.makeText(applicationContext, state?.name, Toast.LENGTH_LONG).show()
+            CashSDK.getKycStatus().enqueue(object: Callback<KycStatusResponse> {
+                override fun onResponse(call: Call<KycStatusResponse>, response: Response<KycStatusResponse>) {
+                    if(response.isSuccessful)
+                        Toast.makeText(applicationContext, response.body()?.data?.items?.get(0)?.status.toString(), Toast.LENGTH_LONG).show()
                 }
-            }
+
+                override fun onFailure(call: Call<KycStatusResponse>, t: Throwable) {
+                    Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+                }
+            })
         }
 
         registerButton.setOnClickListener {
