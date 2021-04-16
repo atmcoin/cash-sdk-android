@@ -97,4 +97,13 @@ object CashSDK : Cash {
         requireSession()
         return cashImpl.uploadKycDocs(docType, filePart)
     }
+
+    override fun updatePersonalInformation(
+        firstName: String,
+        lastName: String,
+        ssn: String
+    ): Call<WacBaseResponse> {
+        requireSession()
+        return cashImpl.updatePersonalInformation(firstName, lastName, ssn)
+    }
 }

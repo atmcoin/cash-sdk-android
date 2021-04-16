@@ -67,6 +67,8 @@ interface WacAPI {
     fun updatePersonalInformation(
         @Header("sessionKey") sessionKey: String,
         @Query(value="ssn", encoded=true) ssn:String?,
+        @Query(value="first_name", encoded=true) firstName:String?,
+        @Query(value="last_name", encoded=true) lastName:String?,
     ): Call<WacBaseResponse>
 
     @Multipart
