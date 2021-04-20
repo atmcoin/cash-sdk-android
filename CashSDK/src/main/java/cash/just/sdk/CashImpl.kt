@@ -199,4 +199,8 @@ class CashImpl:Cash {
     ): Call<WacBaseResponse> {
         return retrofit.uploadKycDoc(sessionKey, docType, filePart)
     }
+
+    override fun updatePersonalInformation(firstName: String, lastName: String, ssn: String): Call<WacBaseResponse> {
+        return retrofit.updatePersonalInformation(sessionKey, ssn, firstName, lastName)
+    }
 }

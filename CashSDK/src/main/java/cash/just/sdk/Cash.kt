@@ -39,4 +39,5 @@ interface Cash {
     fun loginConfirm(confirmNumber: String, listener: WacCallback)
     fun getSession() : String?
     fun uploadKycDocs(docType: KycDocType, filePart: MultipartBody.Part) : Call<WacBaseResponse>
+    fun updatePersonalInformation(firstName: String, lastName: String, ssn: String): Call<WacBaseResponse>
 }

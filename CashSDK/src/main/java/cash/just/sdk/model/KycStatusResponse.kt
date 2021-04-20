@@ -20,13 +20,21 @@ data class KycItem(
     @field:Json(name = "pur_daily_amount_limit") val purchaseDailyAmountLimit: String,
     @field:Json(name = "pur_tx_amount_limit") val purchaseTxAmountLimit: String,
     @field:Json(name = "pur_remain_count") val purchaserRemainCount: String,
+    @field:Json(name = "pur_remain_amount") val purchaseRemainAmount: String,
     @field:Json(name = "red_daily_count_limit") val redemptionDailyCountLimit: String,
     @field:Json(name = "red_daily_amount_limit") val redemptionDailyAmountLimit: String,
     @field:Json(name = "red_tx_amount_limit") val redemptionTxAmountLimit: String,
     @field:Json(name = "red_remain_count") val redemptionRemainCount: String,
-    @field:Json(name = "red_remain_amount") val redemptionRemainAmount: String)
+    @field:Json(name = "red_remain_amount") val redemptionRemainAmount: String,
+    @field:Json(name= "has_pi") val hasPi: String,
+    @field:Json(name= "docs_pending") val docsPending: String,
+    @field:Json(name= "docs_rejected") val docsRejected: String,
+    @field:Json(name= "docs_accepted") val docsAccepted: String,
+    @field:Json(name= "docs_required") val docsRequired: String,
+    @field:Json(name= "first_name") val firstName: String,
+    @field:Json(name= "last_name") val lastName: String)
 
-enum class KycStatus(private val statusCode:String){
+enum class KycStatus (val statusCode: String) {
     NEW("NEW"),
     DOCS_VERIFIED("DOCS_VERIFIED"),
     REJECTED("REJECTED");
